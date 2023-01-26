@@ -1,14 +1,16 @@
 import React from 'react'
 import Header from '../components/Home/Header'
+import LoginForm from "../components/Login/LoginForm";
 import Footer from '../components/Footer/Footer'
 
-function Home() {
+function Login() {
   return (
     <>
         <Header/>
+        <LoginForm/>
         <Footer/>
     </>
   )
 }
 
-export default Home
+export default Login

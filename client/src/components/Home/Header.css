@@ -8,5 +8,31 @@
     font-size: 1.8rem;
     cursor: pointer;
 }
+.details{
+    position: absolute;
+    right:40px;
+    top:20px
+}
+.bar {
+    width: 35px;
+    height: 5px;
+    background-color: #3C6255;
+    margin: 6px 0;
+}
+.toggle{
+    position: absolute;
+    right:40px;
+    top:10px;
+    display: none;
+}
 
+
+@media screen and (max-width : 900px) {
+    #navitems{ 
+        display:none;
+    }
+    .toggle{
+        display: block;
+    }
+}
 
