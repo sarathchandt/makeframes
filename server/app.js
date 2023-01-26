@@ -3,10 +3,13 @@ import express from 'express';
 import path from 'path' ;
 import { fileURLToPath } from 'url'
 import db from './dbConfig/connection.mjs'
+import cors from 'cors'
 
 
 
+//.......................
   
+import userRoutes from './routes/user.mjs';
 
 
 
@@ -17,20 +20,33 @@ const __dirname = path.dirname(__filename);
 const app = express()
 
 
+
+
+
 //.....................
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public'))); 
+app.use(cors({
+    origin:['http://localhost:8000'],
+    method:['POST', 'GET', 'PUT', 'DELETE','PATCH'],
+    credentials: true,
+    allowedHeaders: [
+        'Content-Type',
+        'Access'
+    ]
+}))
 
 
-// mongoose.set("strictQuery", false);
+
+// mongoose..............
 db.connect()
 
-//  mongoose.connect('mongodb://localhost:27017/makeFrames')
 
+//.......................
 
-
+app.use('/user',userRoutes);
 
 
 

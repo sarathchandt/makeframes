@@ -12,16 +12,36 @@ function SignupForm() {
   const[password,setPassword] = useState('')
   const [rePassword, setRePassword] = useState('')
 
-  function signup(e){
+  
+
+  const details = {
+    firstName:firstName,
+    lastName:lastName,
+    email:email,
+    password:password,
+  }
+ 
+
+
+
+  const signup=(e)=>{
+    
     e.preventDefault();
-    axios.post(UURL,firstName,lastName,email,password,rePassword).then(result=>{
-      if(result.isUser){
-        console.log('ok');
+    console.log(UURL);
+    axios.post(`${UURL}signup`,details).then(result=>{
+      console.log(result.data);
+      if(!result.data.is){
+        localStorage.setItem('jwt',result.data.token)
       }else{
+        
         console.log('not ok');
       }
+    }).catch(err=>{
+      log(err)
     })
   }  
+
+
 
   return (
     <div>
@@ -31,7 +51,7 @@ function SignupForm() {
 <div className='flex justify-center'>
 
         <div>
-          <form action=""  onSubmit={signup} >
+          <form action=""   onSubmit={signup} >
             <div>
             <input type="text" name='firstName' className=' m-3 email w-max   border-4 rounded-lg bg-black ' placeholder=' First Name' value={firstName} required onChange={(e)=>{
               setFirstName(e.target.value)
@@ -54,7 +74,7 @@ function SignupForm() {
             }} />
             <br />
 
-            <button class=" buttons bg-green hover:bg-red text-white font-bold py-2 px-4 rounded-lg " >
+            <button type='submit'  className =" buttons bg-green hover:bg-red text-white font-bold py-2 px-4 rounded-lg "   >
               Signup
             </button>
             </div>
