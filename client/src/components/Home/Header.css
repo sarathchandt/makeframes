@@ -26,6 +26,10 @@
     display: none;
 }
 
+.cursor{
+    cursor: pointer;
+}
+
 
 @media screen and (max-width : 900px) {
     #navitems{ 

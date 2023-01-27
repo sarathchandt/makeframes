@@ -1,4 +1,5 @@
 import React from 'react'
+import { useNavigate } from "react-router-dom";
 import './Header.css'
 
 
@@ -8,6 +9,8 @@ function classNames(...classes) {
 }
 
 function  Header() {
+
+  const navigate = useNavigate();
   return (
     <>
 
@@ -21,11 +24,17 @@ function  Header() {
         <p className='red  font-bold' >frames</p>
 
         
-        <div className='flex  details ' style={{color:"#3C6255"}} id = "navitems" >
-          <p className='pl-8 text-sm'>Home</p>
-           <p className='pl-8 text-sm'>About</p>
-           <p className='pl-8 text-sm'>Approach Producers</p>
-           <p className='pl-8 text-sm'>Login</p>
+        <div className='flex  details cursor ' style={{color:"#3C6255"}} id = "navitems" >
+          <p className='pl-8 text-sm cursor' onClick={()=>{   
+             navigate("/")
+             }}>Home</p>
+           <p className='pl-8 text-sm cursor'  onClick={()=>{   
+             navigate("/")
+             }}>About</p>
+           <p className='pl-8 text-sm cursor'>Approach Producers</p>
+           <p className='pl-8 text-sm cursor'  onClick={()=>{   
+             navigate("/login")
+             }}>Login</p>
         </div> 
         <div className='details toggle'>
       <div className='bar'></div>

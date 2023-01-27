@@ -31,7 +31,7 @@ function SignupForm() {
     axios.post(`${UURL}signup`,details).then(result=>{
       console.log(result.data);
       if(!result.data.is){
-        localStorage.setItem('jwt',result.data.token)
+        document.cookie = `${result.data.token}`
       }else{
         
         console.log('not ok');
