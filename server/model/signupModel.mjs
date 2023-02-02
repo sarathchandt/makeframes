@@ -6,8 +6,8 @@ const signupSchema = new mongoose.Schema({
         required: true,
     },
     lastName: {
-        type: String,
-        required: false,  
+        type: String,   
+        // required: false,  
     },
     email: {
         type:String,

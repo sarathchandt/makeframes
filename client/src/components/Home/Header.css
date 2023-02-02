@@ -30,6 +30,26 @@
     cursor: pointer;
 }
 
+.profile{
+    width: 200px;
+    position: fixed;
+    top: 0;
+    right: -100%;
+    height: 100vh;
+    transition: 500ms;
+    z-index: 1;
+}
+.profile.active{
+    right: 0;
+    transition: 500ms;
+}
+.icon-user{
+    width: 20px;
+}
+.hvr:hover{
+   color: antiquewhite;
+}
+
 
 @media screen and (max-width : 900px) {
     #navitems{ 

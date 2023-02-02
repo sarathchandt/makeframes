@@ -21,3 +21,7 @@ body{
 .cursor{
     cursor: pointer;
 }
+.colored-toast.swal2-icon-warning {
+    background-color: #3C6255 !important;
+    color: aliceblue;
+  }

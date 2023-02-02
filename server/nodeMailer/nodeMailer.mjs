@@ -25,7 +25,7 @@ export const sendOtpMessage = (email) => {
             auth: {
                 user: process.env.EMAIL,
                 pass: process.env.PASSWORD
-            }
+            } 
         })
 
         transporter.sendMail(mailOptions).then((res) => {

@@ -1,6 +1,8 @@
 import { Outlet, Navigate } from "react-router-dom";
+import axios from "axios";
+import { UURL } from "../../API/apiCall";
 import React, { useEffect, useState } from 'react';
-import LoginForm from "../components/Login/LoginForm";
+import Home from "./Home";
 
 
 function privateRoutes() {
@@ -10,15 +12,12 @@ function privateRoutes() {
     useEffect(() => {
         const token = document.cookie
         console.log(token);
-        async function datafetch() {
-            await axios.post(`${UURL}loginCheck`, { token: token }).then((response) => {
+             axios.post(`${UURL}loginCheck`, { token: token }).then((response) => {
                 setIsLogin(response.data.user)
             })
-        }
-        datafetch();
     }, [])
     return (
-       isLogin ? <Outlet/> : <LoginForm/>
+       isLogin ? <Outlet/> : <Home/>
     )
 }
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
-
+import Swal from 'sweetalert2'
 import { UURL } from '../../../API/apiCall'
 import axios from 'axios'
 import "./LoginForm.css"
@@ -25,13 +25,55 @@ function LoginForm() {
   const login = (e) => {
     e.preventDefault();
     axios.post(`${UURL}login`, details).then(result => {
-      console.log(result.data);
-      if (result.data?.token) {
+      console.log(result.data,'data');
+      if (result.data?.token && result.data.isuser && result.data.isPass) {
         document.cookie = `${result.data.token}`
         navigate('/')
       } else {
-    
         navigate('/login')
+        if( result.data.isuser==false){
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            customClass: {
+              popup: 'colored-toast'
+            },
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+          })
+  
+          Toast.fire({
+            icon: 'warning',
+            title: 'This email note registered',
+  
+          })
+        }else if(result.data.isPass==false){
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            customClass: {
+              popup: 'colored-toast'
+            },
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+          })
+  
+          Toast.fire({
+            icon: 'warning',
+            title: 'OOPS wrong password',
+  
+          })
+        }
 
       }
     })

@@ -1,12 +1,12 @@
-// import {configureStore} from '@reduxjs/toolkit'
+import {configureStore} from '@reduxjs/toolkit'
 
-// import checkLoginSlice from '../slices/checkLogin.mjs'
+import checkLoginSlice from '../slices/checkLogin.mjs'
 
 
-// const store = configureStore({
-//     reducer : {
-//         checkLogin : checkLoginSlice 
-//     }
-// })
+const store = configureStore({
+    reducer : {
+        checkLogin : checkLoginSlice 
+    }
+})
 
-// export default store
+export default store

@@ -21,7 +21,7 @@ export function userSignupHlpr({ firstName, lastName, email, password,otp }) {
                                 lastName: lastName,
                                 email: email,
                                 password: hash,
-                            })
+                            }) 
                             userDetails.save()
         
                             const token = createJwt({
@@ -32,6 +32,7 @@ export function userSignupHlpr({ firstName, lastName, email, password,otp }) {
                                 is: false,
                                 token: token,
                                 serverOtp:true
+                               
 
                             }
                             resolve(isUser)
@@ -51,7 +52,7 @@ export function userSignupHlpr({ firstName, lastName, email, password,otp }) {
         } else {
             let isUser ={
               is:true ,
-              token:null 
+              token:null ,
 
             } 
             resolve(isUser)
@@ -59,7 +60,7 @@ export function userSignupHlpr({ firstName, lastName, email, password,otp }) {
     })
 }
 
-export function userLoginHlpr({email,password}){
+export function     userLoginHlpr({email,password}){
     let status = {}
     
     return new Promise(async(resolve, reject)=>{
