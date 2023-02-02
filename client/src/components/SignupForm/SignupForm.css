@@ -11,6 +11,10 @@
 }
 .img{
     width: 100%;
-    height: 300px;
-    background-color: #3C6255;
+    height: 500px;
+    /* background-color: #3C6255; */
 }
+.colored-toast.swal2-icon-warning {
+    background-color: #3C6255 !important;
+    color: aliceblue;
+  }

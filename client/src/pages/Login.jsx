@@ -6,7 +6,6 @@ import axios from 'axios';
 import { UURL } from '../../API/apiCall';
 import Header from '../components/Home/Header'
 import LoginForm from "../components/Login/LoginForm";
-import Footer from '../components/Footer/Footer'
 import LandingHome from '../components/landingHome/landingHome'
 
 function Login() {
@@ -34,7 +33,7 @@ function Login() {
     <>
        <Header/>
       { isLogin ? <LandingHome/>: <LoginForm/>}
-        <Footer/> 
+        
     </>
   )
 }

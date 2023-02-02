@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken'
+import {sendOtpMessage} from '../nodeMailer/nodeMailer.mjs'
 
 import {
     userSignupHlpr,
@@ -7,27 +8,12 @@ import {
 
 
 export function userSignup(req, res) {
-    if (!req.user) {
+
         userSignupHlpr(req.body).then((response) => {
-            console.log(response, "0000000101");
-            jwt.verify(response.token, process.env.JWT_SECRET, (err, user) => {
-                console.log(err, 'error')
-                if (err) {
-                    return res.sendStatus(403)
-                } else {
-                    req.user = user
-
-                }
-            })
-            console.log(req.user, 'user');
             console.log(response);
-            res
-                .status(200)
-                .json(response)
+            res.status(201)
+                .json(response)  
         })
-    } else {
-
-    }
 }
 
 export function isUser(req, res) { 
@@ -59,12 +45,13 @@ export function userLogin(req, res) {
             }
             res
             .status(200)
-            .json(result)
+            .json(result)  
         })
-    
-  
-    
-      
 }
 
 
+export  function sendOtp(req,res){
+    sendOtpMessage(req.body.email).then((result)=>{
+        res.status(200).json(result)
+    })
+}

@@ -1,5 +1,5 @@
 import express from "express";
-import {userSignup, userLogin} from '../controllers/userControllers.mjs'
+import {userSignup, userLogin, sendOtp} from '../controllers/userControllers.mjs'
 // import {authenticateToken} from "../jwtMiddleware/jwtAuth.mjs"
 import {isUser} from '../controllers/userControllers.mjs'
 
@@ -19,6 +19,9 @@ router.route('/loginCheck')
 
 router.route('/login')
         .post(userLogin)
+
+router.route('/otp')
+        .post(sendOtp)
        
 
 
