@@ -17,6 +17,10 @@ const signupSchema = new mongoose.Schema({
         type:String,
         required:true
     },
+    isArtist:{
+        type:Boolean,
+        default:false
+    }
  
 
 })

@@ -6,13 +6,8 @@ export const createJwt = (details) => {
 }
 
 export function authenticateToken(req, res, next) {
-    console.log('kkkkkk');
-
     const token = req.headers.cookie
-
-
     console.log(token);
-
     if (token == null) return res.sendStatus(401)
 
     jwt.verify(token, process.env.JWT_SECRET, (err, user) => {

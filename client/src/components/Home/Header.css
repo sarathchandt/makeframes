@@ -29,9 +29,12 @@
 .cursor{
     cursor: pointer;
 }
+.p{
+    z-index: 2;
+}
 
 .profile{
-    width: 200px;
+    width: 300px;
     position: fixed;
     top: 0;
     right: -100%;

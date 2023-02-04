@@ -86,13 +86,8 @@ function LoginForm() {
   return (
     <div >
       <div className='img bg-darkGreen mb-2 mt-20'>
-
       <div className='flex justify-center'>
-        
-
-
         <form action="" onSubmit={login} className=" mt-10"  >
-          
             <input type="email" name='email' className=' m-3 email w-max   border-4 rounded-lg bg-black ' placeholder=' E-mail' required value={email} onChange={(e) => {
               setEmail(e.target.value)
             }} />
@@ -103,11 +98,11 @@ function LoginForm() {
             {
                 seePassword=='password' ?
               
-              <span className="material-symbols-outlined relative top-1.5 right-11 cursor-pointer" onClick={()=>{setSeeRePassword('text')}}>
+              <span className="material-symbols-outlined relative top-1.5 right-12 cursor-pointer"  onClick={()=>{setSeeRePassword('text')}}>
                 visibility
               </span> :
                 
-                <span className="material-symbols-outlined relative top-1.5 right-11 cursor-pointer" onClick={()=>{setSeeRePassword('password')}}>
+                <span className="material-symbols-outlined relative top-1.5 right-12 cursor-pointer"  onClick={()=>{setSeeRePassword('password')}}>
                 visibility_off
               </span>
               }
