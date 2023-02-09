@@ -6,12 +6,14 @@ import {
     checkArtistNow,
     userSignupHlpr,
     userLoginHlpr,
-    artistRegister
+    artistRegister,
+    savePropic,
+    takedp,
+    submitPgToDB
 } from "./userHelpers/userHelper.mjs";
 
 
 export function userSignup(req, res) {
-    console.log(req.body,'jjjjjj');
         userSignupHlpr(req.body).then((response) => {
             res
             .status(201)
@@ -70,3 +72,22 @@ export function registerArtist(req,res){
         .json(result)
     })
 }
+export function profilePic (req, res){
+    savePropic(req.body).then(result=>{
+        res.json(result)
+    })
+}
+
+export function bringDp(req, res){
+    takedp(req.body).then(result=>{
+        res.json(result)
+    });
+    
+}
+
+export function submitProgram(req, res){
+    console.log(req.files ,'llll');
+    submitPgToDB(req.body).then((result)=>{
+        
+    })
+} 

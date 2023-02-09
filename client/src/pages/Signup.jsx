@@ -20,9 +20,7 @@ useEffect(()=>{
     const token = document.cookie
     console.log(token);
     async function  datafetch  (){
-          console.log('hi');
          await axios.post(`${UURL}loginCheck`,{token:token}).then((response)=>{
-              console.log(response.data.user);
               setIsLogin(response.data.user)
               response.data.user?navigate('/'):navigate('/signup')
           })

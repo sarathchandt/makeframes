@@ -20,7 +20,11 @@ const signupSchema = new mongoose.Schema({
     isArtist:{
         type:Boolean,
         default:false
-    }
+    },
+    dpimage:{ 
+        type:String
+    } 
+
  
 
 })

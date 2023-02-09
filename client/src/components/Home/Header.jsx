@@ -53,7 +53,6 @@ function Header() {
       token:token
     }
     axios.post(`${UURL}registerArtist`, data).then((result) => {
-      console.log(result.data,'set set');
     })
   }
 
@@ -116,7 +115,7 @@ function Header() {
               <div className='d-flex  justify-content-end col-3  mt-1  '> <BiMovie style={{ fontSize: '20px' }} />  </div>
               <div className='d-flex  justify-content-start col-9   ' onClick={() => {
                 setProfilebar(false)
-                is_artist ? navigate('/rofetionalProfile') : setProprofile(true);
+                is_artist ? navigate('/profetionalProfile') : setProprofile(true);
               }} >{is_artist ? 'Artist Profile':'Be An Artist' } </div>
             </div>
             <div className='row cursor text-darkGreen hover:text-white hover:bg-red p-2'>
@@ -148,6 +147,7 @@ function Header() {
                 <div className='d-flex  justify-content-start col-12 text-darkGreen  mt-3'>Choose Domain</div>
                 <div className='d-flex  justify-content-center col-12 text-darkGreen  ' >
                   <select className='bg-green border border-3 rounded w-full m-2 border-darkGreen mb-4' onClick={(e) => { setDomain(e.target.value) }}   >
+                  <option value="" style={{ display: 'none' }} >Choose </option>
                     <option value="Director" className='bg-darkGreen text-white'  >Director</option>
                     <option value="Actor" className='bg-darkGreen text-white' >Actor</option>
                     <option value="Actress" className='bg-darkGreen text-white'  >Actress</option>

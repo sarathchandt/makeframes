@@ -5,6 +5,8 @@ import Login from './pages/Login'
 import Signup from "./pages/Signup"
 import PrivateRoutes from './pages/privateRoutes'
 import Profile from './pages/Profile'
+import ProfetionalProfile from'./pages/Profetional.jsx'
+import AddProgram from './pages/AddPrograms'
 
 function App() {
 
@@ -16,6 +18,8 @@ function App() {
         <Routes>
           <Route element={<PrivateRoutes/>}>
             <Route element={<Profile/>} path='/profile' />
+            <Route element={<ProfetionalProfile/>} path='/profetionalProfile' />
+            <Route element={<AddProgram/>}  path='/addPrograms' />
           </Route>
 
 
