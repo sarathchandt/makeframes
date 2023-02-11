@@ -25,7 +25,6 @@ function LoginForm() {
   const login = (e) => {
     e.preventDefault();
     axios.post(`${UURL}login`, details).then(result => {
-      console.log(result.data,'data');
       if (result.data?.token && result.data.isuser && result.data.isPass) {
         document.cookie = `${result.data.token}`
         navigate('/')

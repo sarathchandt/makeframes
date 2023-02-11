@@ -57,7 +57,6 @@ function Header() {
   }
 
   useEffect(() => {
-    console.log(is_artist,'artist');
     const token = document.cookie
     axios.post(`${UURL}loginCheck`, { token: token }).then(response => {
       setLogin(response.data.user)
@@ -66,9 +65,7 @@ function Header() {
     })
 
     axios.post(`${UURL}checkArtist`, { token: token }).then((response) => {
-      console.log(response.data.isArtist);
       dispatch(changeState(response.data.isArtist))
-
     })
   })
 
@@ -159,7 +156,7 @@ function Header() {
             </div>
           </form>
         </div>
-
+{/* above code to change form.................................................. */}
 
 
         <div className='details toggle p-1 text-green cursor' onClick={() => {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import fetch from 'isomorphic-fetch';
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+    import axios from 'axios';
 import './AddProgram.css'
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
@@ -23,62 +23,57 @@ function AddProgramform() {
     const [category, setCategory] = useState('')
     const [amount, setAmount] = useState(null)
     const [description, setDescription] = useState('')
+    const [image, setImage] = useState([])
     const [imageArray, setImageArray] = useState([])
     const [vdoFile, setVdoFile] = useState()
     const [selectedDaates, setSelectedDates] = useState([])
     const [videoUrl, setVideoUrl] = useState('')
 
-
-    const uploadForm = () => {
-
-        let details = {
-            token: document.cookie,
-            selectedDaates: selectedDaates,
-            name: name,
-            category: category,
-            amount: amount,
-            description: description,
-            imageArray: imageArray,
-            videoUrl: videoUrl
-        }
-        axios
-            .post()
-        axios.post(`${UURL}submitProgram`, details).then(result => {
-            console.log(result.data);
-        })
-
-
-
-
+const navigate = useNavigate()
+    const uploadForm = async () => {
+        const data = new FormData()
+        data.append('file', vdoFile)
+        data.append("upload_preset", 'nefiqdoa')
+        await axios.post(`https://api.cloudinary.com/v1_1/dyn6m4tou/video/upload`, data).then((res) => {
+            setVideoUrl(res.data.secure_url)
+            image.forEach(async (element) => {
+                const data = new FormData()
+                data.append('file', element)
+                data.append("upload_preset", 'nefiqdoa')
+                await axios.post(`https://api.cloudinary.com/v1_1/dyn6m4tou/image/upload`, data).then(res => {
+                    imageArray.push(res.data.secure_url)
+                    let details = {
+                        token: document.cookie,
+                        selectedDaates: selectedDaates,
+                        name: name,
+                        category: category,
+                        amount: amount,
+                        description: description,
+                        imageArray: imageArray,
+                        videoUrl: videoUrl
+                    }
+                    axios.post(`${UURL}submitProgram`, details).then(result => {
+                        console.log(result.data);
+                        if(result.data.Program){
+                            navigate('/viewPrograms')
+                        }else{
+                            navigate('/addPrograms')
+                        }
+                    })
+                })
+            })
+        }).catch(err => console.log(err))
     }
 
 
 
     const vdoUpload = async (e) => {
-     
         setVdoFile(e.target.files[0])
-        console.log(e.target.files[0].name);
-        const data = new FormData()
-        data.append('file', vdoFile)
-        data.append("upload_preset", 'nefiqdoa')
-        await axios.post(`https://api.cloudinary.com/v1_1/dyn6m4tou/video/upload`, data).then(res => {
-            setVideoUrl(res.data.secure_url)
-        }).catch(err => console.log(err))
-
-
     }
 
     const imageUpload = async (e) => {
-
         for (let i = 0; i < e.target.files.length; i++) {
-        
-            console.log(e.target.files[i]);
-            const data = new FormData()
-            data.append('file',e.target.files[i] )
-            data.append("upload_preset", 'nefiqdoa')
-            await axios.post(`https://api.cloudinary.com/v1_1/dyn6m4tou/image/upload`,data).then(res=>{
-                imageArray.push(res.data.secure_url)
-            })
+            setImage([...image, e.target.files[i]])
         }
 
     }

@@ -12,7 +12,7 @@ import {AiFillSchedule} from '@react-icons/all-files/ai/AiFillSchedule.esm'
 import {BsFillPlusCircleFill} from '@react-icons/all-files/bs/BsFillPlusCircleFill.esm'
 import {RiSettings4Fill} from "@react-icons/all-files/ri/RiSettings4Fill.esm"
 
-function ProfetionalHeader(props) {
+function ProfetionalHeader() {
 
     
     const [navBar, setNavbar] = useState(false)
@@ -31,7 +31,7 @@ function ProfetionalHeader(props) {
                         <p className='ms-5   mt-3 hover:text-red  cursor' onClick={()=>{
                             navigate('/addPrograms')
                         }} >Add Programs</p>
-                        <p className='ms-5  mt-3 hover:text-red cursor'  >Schedules</p>
+                        <p className='ms-5  mt-3 hover:text-red cursor' onClick={()=>{navigate('/viewPrograms')}}  >Schedules</p>
                         <p className='ms-5 mt-3 hover:text-red cursor'  >Add Post</p>
                         <p className='ms-5 mt-3 hover:text-red cursor'  >Settings</p>
                     </div>
@@ -50,13 +50,15 @@ function ProfetionalHeader(props) {
                         <div className="container-fluid">
                             <div className="row hover:bg-red hover:text-white p-1 cursor">
                                 <div className='d-flex  justify-content-end col-4  mt-1 text-darkGreen '><MdEventAvailable style={{ fontSize: '30px' }} /></div>
-                                <div className='d-flex  justify-content-start col-8  mt-1 text-darkGreen '> Add Programs</div>
+                                <div className='d-flex  justify-content-start col-8  mt-1 text-darkGreen ' onClick={()=>{
+                            navigate('/addPrograms')
+                        }}> Add Programs</div>
                             </div>
                         </div>
                         <div className="container-fluid">
                             <div className="row hover:bg-red hover:text-white p-1 cursor ">
                                 <div className='d-flex  justify-content-end col-4  mt-1 text-darkGreen '><AiFillSchedule style={{ fontSize: '30px' }} /></div>
-                                <div className='d-flex  justify-content-start col-8  mt-1 text-darkGreen '> Schedules</div>
+                                <div className='d-flex  justify-content-start col-8  mt-1 text-darkGreen 'onClick={()=>{navigate('/viewPrograms')}}> Schedules</div>
                             </div>
                         </div>
                     

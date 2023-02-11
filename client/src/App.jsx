@@ -7,7 +7,8 @@ import PrivateRoutes from './pages/privateRoutes'
 import Profile from './pages/Profile'
 import ProfetionalProfile from'./pages/Profetional.jsx'
 import AddProgram from './pages/AddPrograms'
-
+import ViewPrograms from './pages/Viewprograms.jsx'
+import ViewSingleProgram from './pages/viewSingleProgram'
 function App() {
 
 
@@ -20,9 +21,11 @@ function App() {
             <Route element={<Profile/>} path='/profile' />
             <Route element={<ProfetionalProfile/>} path='/profetionalProfile' />
             <Route element={<AddProgram/>}  path='/addPrograms' />
+            <Route element={<ViewPrograms/>} path='/viewPrograms' />
+            <Route element={<ViewSingleProgram/>} path = '/viewSingleProgram'/>
           </Route>
 
-
+        
           <Route exact path='/' element={<Home />} />
           <Route path='/login' element={<Login />} />
           <Route path='/signup' element={<Signup />} />

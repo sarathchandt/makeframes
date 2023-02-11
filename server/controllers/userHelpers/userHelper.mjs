@@ -4,7 +4,7 @@ import { createJwt, verifyToken } from '../../jwtMiddleware/jwtAuth.mjs'
 import { verifyOtp } from '../../nodeMailer/nodeMailer.mjs'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import cloudinary  from '../../cloudinaryConfig/config.mjs'
+
 
 
 export function userSignupHlpr({ firstName, lastName, email, password, otp }) {
@@ -191,13 +191,10 @@ export function takedp(token) {
     })
 }
 export function submitPgToDB(programDetails) {
-    
     return new Promise(async (resolve, reject) => {
         verifyToken(programDetails.token).then(async (token) => {
             if (token.token) {
-               console.log(programDetails);
                 await User.find({ email: token.user.email }).then((result) => {
-                    
                     new Programs({
                         name: programDetails.name,
                         selectedDaates: programDetails.selectedDaates,
@@ -205,16 +202,47 @@ export function submitPgToDB(programDetails) {
                         amount: programDetails.amount,
                         description: programDetails.description,
                         imageArray: programDetails.imageArray,
-                        vdoFile: programDetails.vdoFile,
+                        vdoFile: programDetails.videoUrl,
                         user: result[0]._id
-            }).save()
+                    }).save()
+                    resolve({ Program: true })
                 })
             } else if (token.token == false) {
-                console.log('false');
+                resolve({ Program: false })
             } else {
-                console.log('expired'); 
+                resolve({ Program: 'exp' })
             }
         })
 
     })
-} 
+}
+
+export function viewPr(token) {
+    return new Promise((resolve, rejecct) => {
+        verifyToken(token.token).then(async (result) => {
+            if (result.token) {
+                await User.findOne({ email: result.user.email }).then(async (user) => {
+                    await Programs.find({ user: user._id }).then(result => {
+                        resolve(result)
+                    })
+                })
+            } else {
+                resolve({ token: false })
+            }
+        })
+    })
+
+}
+
+export function tekeSingle(id){
+    let program = {}
+    return new Promise ((resolve, reject)=>{
+        if(id==null){
+            resolve(program.id=null)
+        }else{
+            Programs.findOne({_id:id.id}).then(result=>{
+                resolve(result)
+            })
+        }
+    })
+}

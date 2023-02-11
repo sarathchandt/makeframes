@@ -9,7 +9,9 @@ import {
     artistRegister,
     savePropic,
     takedp,
-    submitPgToDB
+    submitPgToDB,
+    viewPr,
+    tekeSingle
 } from "./userHelpers/userHelper.mjs";
 
 
@@ -86,8 +88,23 @@ export function bringDp(req, res){
 }
 
 export function submitProgram(req, res){
-    console.log(req.files ,'llll');
     submitPgToDB(req.body).then((result)=>{
-        
+            res
+            .status(200)
+            .json(result)
     })
 } 
+
+export function viewPrograms(req, res){
+    viewPr(req.body).then(result=>{
+        res
+        .status(200)
+        .json(result)
+    })
+}
+
+export function takeSingleProgram(req,res){
+    tekeSingle(req.body).then(result=>{
+        res.status(200).json(result)
+    })
+}
