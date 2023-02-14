@@ -234,14 +234,13 @@ export function viewPr(token) {
 
 }
 
-export function tekeSingle(id){
-    let program = {}
-    return new Promise ((resolve, reject)=>{
-        if(id==null){
-            resolve(program.id=null)
+export function tekeSingle(objid){
+    return new Promise (async(resolve, reject)=>{
+        if(objid==null){
+            resolve({id:null})
         }else{
-            Programs.findOne({_id:id.id}).then(result=>{
-                resolve(result)
+          await  Programs.findOne({_id:objid.id}).then(result=>{
+                resolve(result) 
             })
         }
     })

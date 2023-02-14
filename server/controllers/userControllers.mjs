@@ -98,7 +98,7 @@ export function submitProgram(req, res){
 export function viewPrograms(req, res){
     viewPr(req.body).then(result=>{
         res
-        .status(200)
+        .status(200) 
         .json(result)
     })
 }

@@ -24,8 +24,8 @@ const singleProgramSlice=createSlice({
         })
         builder.addCase(fetchSingleProgram.fulfilled,(state,action)=>{
             state.loading=false
-            state.program= action.payload
-            console.log(action,"action");
+            state.program= action
+            
         })
         builder.addCase(fetchSingleProgram.rejected,(state,action)=>{
             state.loading=false

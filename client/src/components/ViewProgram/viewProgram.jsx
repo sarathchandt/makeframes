@@ -26,14 +26,15 @@ function viewProgram() {
  
 
   return (
+  
     <div>
       <div className="container-fluid">
         <div className="row">
-          {
+          { 
             programs.loading ? <div>nothing</div> : programs.programs.data.map(obj => {
               return <>
                 <div className="col-md-6 mt-3 d-flex justify-content-center cursor" onClick={()=>{
-   gotoProgram(obj._id)          
+         gotoProgram(obj._id)          
         }}>
                   <img src={obj.imageArray[0]} className=' w-fill mt-5 p-4 w-70 ' alt="Image Of Program" />
                 </div>
@@ -64,6 +65,7 @@ function viewProgram() {
         </div>
       </div>
     </div>
+  
   )
 }
 

@@ -11,7 +11,7 @@ import { UURL } from '../../../API/apiCall';
 
 
 
-function AddProgramform() {
+function  AddProgramform() {
 
 
 
@@ -24,7 +24,7 @@ function AddProgramform() {
     const [amount, setAmount] = useState(null)
     const [description, setDescription] = useState('')
     const [image, setImage] = useState([])
-    const [imageArray, setImageArray] = useState([])
+    const [imageArray] = useState([])
     const [vdoFile, setVdoFile] = useState()
     const [selectedDaates, setSelectedDates] = useState([])
     const [videoUrl, setVideoUrl] = useState('')

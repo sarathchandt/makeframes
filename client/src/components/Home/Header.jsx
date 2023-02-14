@@ -151,7 +151,7 @@ function Header() {
 
                   </select>
                 </div>
-                <div className='d-flex  justify-content-end col-12'><button type='submit' className='btn bg-darkGreen text-white hover:bg-red m-2'>Make Profile</button></div>
+                <div className='d-flex  justify-content-end col-12'><button type='submit' className='btn bg-darkGreen text-white hover:bg-red m-2' onClick={()=>{setProprofile(false)}}>Make Profile</button></div>
               </div>
             </div>
           </form>

@@ -84,7 +84,7 @@ function LoginForm() {
 
   return (
     <div >
-      <div className='img bg-darkGreen mb-2 mt-20'>
+      <div className='img bg-darkGreen  mt-20'>
       <div className='flex justify-center'>
         <form action="" onSubmit={login} className=" mt-10"  >
             <input type="email" name='email' className=' m-3 email w-max   border-4 rounded-lg bg-black ' placeholder=' E-mail' required value={email} onChange={(e) => {

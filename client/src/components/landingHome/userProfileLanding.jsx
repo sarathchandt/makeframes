@@ -18,9 +18,7 @@ function userProfileLanding() {
     useEffect(()=>{
         const token =  document.cookie;
         axios.post(`${UURL}bringDp`,{token:token}).then((result)=>{
-            setDpimg(result.data.dpimage)
-            console.log(result.data.dpimage)
-        
+            setDpimg(result.data.dpimage)        
         
             })
     },[])

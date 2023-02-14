@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix ."
   },
   "dependencies": {
     "@mui/material": "^5.11.6",
@@ -36,6 +38,7 @@
     "@types/react-dom": "^18.0.9",
     "@vitejs/plugin-react": "^3.0.0",
     "autoprefixer": "^10.4.13",
+    "eslint": "^8.34.0",
     "postcss": "^8.4.21",
     "react-router-dom": "^6.7.0",
     "tailwindcss": "^3.2.4",
