@@ -57,6 +57,20 @@ p{
    color: antiquewhite;
 }
 
+.proffesionalProfile{
+    width: 300px;
+    position: fixed;
+    top: 0;
+    right:5%;
+    height: 270px;
+    transition: 500ms;
+    z-index: 2;
+}
+.proffesionalProfile.active{
+    top: -100%;
+    transition: 500ms;
+}
+
 
 @media screen and (max-width : 900px) {
     #navitems{ 

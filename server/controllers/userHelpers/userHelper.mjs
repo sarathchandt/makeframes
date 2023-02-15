@@ -1,5 +1,6 @@
 import User from '../../model/signupModel.mjs'
 import Programs from '../../model/programModel.mjs'
+import Posts from '../../model/postModel.mjs'
 import { createJwt, verifyToken } from '../../jwtMiddleware/jwtAuth.mjs'
 import { verifyOtp } from '../../nodeMailer/nodeMailer.mjs'
 import bcrypt from 'bcrypt'
@@ -244,4 +245,24 @@ export function tekeSingle(objid){
             })
         }
     })
+}
+
+export function addPosts(body){
+        return new Promise(async(resolve, reject)=>{
+            await verifyToken(body.token).then(async(res)=>{
+                if(res.token){
+                    await User.findOne({email:res.user.email}).then(res=>{
+                        new Posts({
+                            images:body.images,
+                            coments:body.coments,
+                            user:res._id
+                        }).save()
+                        resolve({posted:true})
+                    })
+                }else{
+                    resolve({token:null})
+                }
+            })
+           
+        })
 }

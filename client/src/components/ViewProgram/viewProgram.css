@@ -1,0 +1,11 @@
+.swal2-modal{
+    background-color: #A6BB8D;
+    color: #021710;
+
+
+}
+body.swal2-shown > [aria-hidden="true"] {
+  transition: 0.1s filter;
+  filter: blur(10px);
+}
+

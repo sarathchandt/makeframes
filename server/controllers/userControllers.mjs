@@ -11,7 +11,8 @@ import {
     takedp,
     submitPgToDB,
     viewPr,
-    tekeSingle
+    tekeSingle,
+    addPosts
 } from "./userHelpers/userHelper.mjs";
 
 
@@ -72,7 +73,7 @@ export function registerArtist(req,res){
         res
         .status(200)
         .json(result)
-    })
+    }) 
 }
 export function profilePic (req, res){
     savePropic(req.body).then(result=>{
@@ -105,6 +106,11 @@ export function viewPrograms(req, res){
 
 export function takeSingleProgram(req,res){
     tekeSingle(req.body).then(result=>{
+        res.status(200).json(result)
+    })
+}
+export function addPost(req,res){
+    addPosts(req.body).then(result=>{
         res.status(200).json(result)
     })
 }
