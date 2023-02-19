@@ -125,7 +125,6 @@ export function checkArtistNow(token) {
 }
 
 export function artistRegister(details) {
-    console.log(details, 'referance_id');
     return new Promise((resolve, reject) => {
         if (details.token == null) {
             resolve({ user: false })
@@ -134,18 +133,9 @@ export function artistRegister(details) {
                 if (err) {
                     resolve({ user: false })
                 } else {
-                    await User.findById(details.referance_id).then((result) => {
-                        console.log(result, 'result');
-                        if (!result) {
-                            resolve({ referance: false })
-                        } else {
-                            User.updateOne({ email: user.email }, { $set: { isArtist: true } }).then((result) => {
-                                resolve({ referance: true })
-                            })
-                        }
-                    }).catch((err) => {
-                        resolve({ referance: false })
-                    })
+                User.updateOne({ email: user.email }, { $set: { isArtist: true , about:details.about, domain:details.domain} }).then(() => {
+                    resolve({ artistDone: true })
+                })                   
                 }
             })
         }
@@ -154,7 +144,7 @@ export function artistRegister(details) {
 }
 
 export function savePropic(body) {
-
+console.log(body);
     return new Promise((resolve, reject) => {
         if (body.token == null) {
             resolve({ token: null })
@@ -165,9 +155,9 @@ export function savePropic(body) {
                 } else {
                     await User.updateOne({ email: user.email }, {
                         $set:
-                            { dpimage: body.base64 }
+                            { dpimage: body.image }
                     }).then(re => {
-                        console.log(re);
+                        resolve({add:true})
                     }).catch(err => console.log(err))
                 }
             })
@@ -182,8 +172,8 @@ export function takedp(token) {
                 resolve({ token: false })
             } else {
                 await User.findOne({ email: user.email }
-                ).then(re => {
-                    resolve(re)
+                ).then(res => {
+                    resolve(res)
                 }).catch(err => {
                     resolve(err)
                 })
@@ -200,7 +190,7 @@ export function submitPgToDB(programDetails) {
                         name: programDetails.name,
                         selectedDaates: programDetails.selectedDaates,
                         category: programDetails.category,
-                        amount: programDetails.amount,
+                        amount: programDetails.amount, 
                         description: programDetails.description,
                         imageArray: programDetails.imageArray,
                         vdoFile: programDetails.videoUrl,
@@ -212,7 +202,7 @@ export function submitPgToDB(programDetails) {
                 resolve({ Program: false })
             } else {
                 resolve({ Program: 'exp' })
-            }
+            }  
         })
 
     })
@@ -223,8 +213,10 @@ export function viewPr(token) {
         verifyToken(token.token).then(async (result) => {
             if (result.token) {
                 await User.findOne({ email: result.user.email }).then(async (user) => {
-                    await Programs.find({ user: user._id }).then(result => {
+                    console.log(user._id);
+                    await Programs.find({ user:user._id}).then(result => {
                         resolve(result)
+                        console.log(result);
                     })
                 })
             } else {
@@ -265,4 +257,42 @@ export function addPosts(body){
             })
            
         })
+}
+
+export function pickPostsDb(token){
+    return new Promise((resolve,reject)=>{
+     verifyToken(token.token).then(res=>{
+            if(res.token){
+                User.findOne({email:res.user.email}).then(user=>{
+                    Posts.find({user:user._id}).then(res=>{
+                        resolve(res)
+                    })
+                })
+            }else{
+                resolve({details:false}) 
+            }
+        })
+    })
+}
+
+export function bringPsts(body){
+    return new Promise((resolve, rejecct)=>{
+             verifyToken(body.token).then(async(res)=>{
+            if(res.token){
+                await Programs.find().then(Programs=>{
+                    resolve(Programs)
+                })
+            }else{
+                resolve({Programs:false})
+            }
+        })
+    })
+}
+
+export function takeOnePg(id){
+    return new Promise((resolve, rejecct)=>{
+        Programs.findById(id.id).then(result=>{
+            resolve(result)
+        })
+    })
 }

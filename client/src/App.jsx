@@ -3,12 +3,14 @@ import './App.css'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Signup from "./pages/Signup"
-import PrivateRoutes from './pages/privateRoutes'
+import PrivateRoutes from './pages/PrivateRoutes'
 import Profile from './pages/Profile'
 import ProfetionalProfile from'./pages/Profetional.jsx'
 import AddProgram from './pages/AddPrograms'
 import ViewPrograms from './pages/Viewprograms.jsx'
-import ViewSingleProgram from './pages/viewSingleProgram'
+import ViewSingleProgram from './pages/ViewSingleProgram'
+import ViewStageProgramUser from "./pages/ViewStageProgramUser"
+import ViewProgramDetails from './pages/ViewProgramDetails'
 function App() {
 
 
@@ -23,6 +25,8 @@ function App() {
             <Route element={<AddProgram/>}  path='/addPrograms' />
             <Route element={<ViewPrograms/>} path='/viewPrograms' />
             <Route element={<ViewSingleProgram/>} path = '/viewSingleProgram'/>
+            <Route element={<ViewStageProgramUser/>} path='/viewStageProgramUser'/>
+            <Route element ={<ViewProgramDetails/>} path = '/viewProgramDetails'/>
           </Route>
 
         

@@ -12,12 +12,12 @@ function SingleProgram() {
   const [searchParams] = useSearchParams()
   const singleProgram = useSelector(state=>state.fetchSingleProgram)
   const dispatch = useDispatch()
-
+  console.log(program);
   useEffect(()=>{
     axios.post(`${UURL}takeSingleProgram`,{id:searchParams.get('id')}).then(result=>{
       setProgram(result)
       dispatch(fetchSingleProgram(searchParams.get('id')))
-      console.log(singleProgram);
+      
      })
   
   },[])
@@ -28,21 +28,23 @@ function SingleProgram() {
        <div className="container-fluid">
         <div className="row">
           <div className=" p-5 col-md-6">
-         { singleProgram.loading ? <div>loading..</div>:   <video src={program.data.vdoFile} controls /> }
+         { singleProgram.loading ? <div>loading..</div>:   <video src={program.data?.vdoFile}  width="100%"  controls /> }
          <h1 className='text-green font-extrabold text-uppercase p-2' style={{fontSize:'20px'}}>{program.data.name}</h1>
           </div>
           <div className="col-md-6">
             <div className="container-fluid">
-              <div className="row">
+              <div className="row d-flex justify-content-center">
                { singleProgram.loading ? <div>loading...</div> : 
                program.data.imageArray.map(objImg=>{
                  return <>
                   <div className=" d-md-block d-none col-6 pt-5">
-                    <img src={objImg} alt="" />
+                    <img src={objImg} className='object-cover' style={{width:'80%', height:'50%'}}  alt="" />
                   </div> 
-                  <div className=" d-md-none d-block col-6 ">
-                    <img src={objImg} alt="" />
-                  </div>
+                  <div className=" d-md-none col-6 pt-5">
+                    
+                    <img src={objImg} className='object-cover' style={{width:'80%', height:'50%'}}  alt="" />
+                  </div> 
+                 
                   </>
                }) 
              

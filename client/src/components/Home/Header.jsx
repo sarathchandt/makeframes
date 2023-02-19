@@ -34,7 +34,7 @@ function Header() {
   const [lastname, setLastname] = useState('')
   const [proprofile, setProprofile] = useState(false)
   const [domain, setDomain] = useState('')
-  const [referance_id, setReferance_id] = useState('')
+  const [about, setAbout] = useState('')
 
   
 
@@ -49,10 +49,13 @@ function Header() {
     const token = document.cookie
     let data = {
       domain: domain,
-      referance_id: referance_id,
+      about: about,
       token:token
     }
     axios.post(`${UURL}registerArtist`, data).then((result) => {
+      if(artistDone){
+        navigate('/profetionalProfile')
+      }
     })
   }
 
@@ -75,8 +78,8 @@ function Header() {
     <>
 
       <div className='flex flex-nowrap p-2'>
-        <p className='green  font-bold' >Make</p>
-        <p className='red  font-bold' >frames</p>
+        <p className='green  font-bold' onClick={()=>{navigate('/')}}>Make</p>
+        <p className='red  font-bold' onClick={()=>{navigate('/')}} >frames</p>
 
 
         <div className='flex  details  ' style={{ color: "#3C6255" }} id="navitems" >
@@ -134,10 +137,10 @@ function Header() {
                 <div className='d-flex  justify-content-end col-6 mt-2 text-darkGreen cursor' onClick={() => { setProprofile(false) }} ><MdCancel style={{ fontSize: '25px' }} /></div>
                 <div className='d-flex  justify-content-center col-12 text-darkGreen mt-4' > <BiMovie style={{ fontSize: '25px' }} /></div>
                 <div className='d-flex  justify-content-center col-12 text-darkGreen '><h5>Be An Artist</h5></div>
-                <div className='d-flex  justify-content-start col-12 text-darkGreen  mt-3'>Enter Referance Id</div>
+                <div className='d-flex  justify-content-start col-12 text-darkGreen  mt-3'>About</div>
                 <div className='d-flex  justify-content-center col-12 text-darkGreen  ' >
-                  <input type="text" value={referance_id} className='bg-green border border-3 rounded w-full m-2 border-darkGreen' onChange={(e) => {
-                    setReferance_id(e.target.value)
+                  <input type="text" value={about} className='bg-green border border-3 rounded w-full m-2 border-darkGreen' onChange={(e) => {
+                    setAbout(e.target.value)
                   }} />
                 </div>
 

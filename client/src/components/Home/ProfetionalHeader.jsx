@@ -32,36 +32,42 @@ function ProfetionalHeader() {
         }
     }
 
-    const upload = () => {
+    const upload =  () => {
         const data = new FormData()
         file.forEach(async (image) => {
             data.append('file', image)
             data.append("upload_preset", 'nefiqdoa')
-            await axios.post('https://api.cloudinary.com/v1_1/dyn6m4tou/image/upload', data).then(res => {
+            await axios.post('https://api.cloudinary.com/v1_1/dyn6m4tou/image/upload', data).then(async(res) => {
                 imageArray.push(res.data.secure_url)
+                
+                let details = {
+                    images: imageArray,
+                    coments: coment,
+                    token: document.cookie
+                }
+                await axios.post(`${UURL}addPost`, details).then(res => {
+                    if (res.data.posted) {
+                        navigate('/profetionalProfile')
+                        location.reload();
+                    }
+                })
             })
         })
-        let details = {
-            images: imageArray,
-            coments: coment,
-            token: document.cookie
-        }
-        axios.post(`${UURL}addPost`, details).then(res => {
-            if (res.data.posted) {
-                navigate('/profetionalProfile')
-            }
-        })
+        
 
     }
     return (
         <div className='container-fluid'>
             <div className='row' >
                 <div className='flex flex-nowrap p-2 col-3'>
-                    <p className='green  font-bold' >Make</p>
-                    <p className='red  font-bold' >frames</p>
+                    <p className='green  font-bold' onClick={()=>{navigate('/')}} >Make</p>
+                    <p className='red  font-bold' onClick={()=>{navigate('/')}} >frames</p>
                 </div>
                 <div className='d-md-block d-none  col-md-9'>
                     <div className=' d-flex  justify-content-end text-green '>
+                    <p className='ms-5   mt-3 hover:text-red  cursor' onClick={() => {
+                            navigate('/profetionalProfile')
+                        }} >Profile</p>
                         <p className='ms-5   mt-3 hover:text-red  cursor' onClick={() => {
                             navigate('/addPrograms')
                         }} >Add Programs</p>
@@ -80,7 +86,7 @@ function ProfetionalHeader() {
                 <input className=' bg-green border border-3 rounded w-full border-darkGreen' type="file" accept='image/*' multiple onChange={loadImage} /><br />
                 <input className=' bg-green border border-3 mt-1 rounded w-full border-darkGreen ' type="text" placeholder='Add coment' value={coment} onChange={(e) => { setComent(e.target.value) }} /><br />
                 <div className='d-flex justify-content-center p-1'>
-                    <button className=' btn bg-darkGreen  text-white hover:bg-darkGreen' onClick={() => { upload() }} >Upload Post</button> <br />
+                    <button className=' btn bg-darkGreen  text-white hover:bg-darkGreen' onClick={() => { upload();setPostNav(false) }} >Upload Post</button> <br />
                 </div>
             </div>
 

@@ -1,6 +1,5 @@
 import React,{useEffect, useState} from 'react'
 import { useNavigate } from 'react-router-dom'
-import Footer from '../components/Footer/Footer'
 import SignupForm from '../components/SignupForm/SignupForm'
 import Header from '../components/Home/Header'
 import axios from 'axios'

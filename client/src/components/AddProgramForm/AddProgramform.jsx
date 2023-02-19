@@ -6,6 +6,8 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { IoIosRemoveCircle } from "@react-icons/all-files/io/IoIosRemoveCircle.esm"
 import { UURL } from '../../../API/apiCall';
+import Swal from 'sweetalert2'
+
 
 
 
@@ -28,20 +30,117 @@ function  AddProgramform() {
     const [vdoFile, setVdoFile] = useState()
     const [selectedDaates, setSelectedDates] = useState([])
     const [videoUrl, setVideoUrl] = useState('')
+    const [throttleClick, setThrottleClick] = useState(false);
 
-const navigate = useNavigate()
-    const uploadForm = async () => {
+
+    const navigate = useNavigate();
+
+
+const uploadForm = async () => {
+    if(!throttleClick){
+
+
+  
+
+        if(name.length==0){
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                customClass: {
+                  popup: 'colored-toast'
+                },
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.addEventListener('mouseenter', Swal.stopTimer)
+                  toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+              })
+      
+              Toast.fire({
+                icon: 'warning',
+                title: "Please add a Name",
+      
+              })
+        }else if(category.length==0){
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                customClass: {
+                  popup: 'colored-toast'
+                },
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.addEventListener('mouseenter', Swal.stopTimer)
+                  toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+              })
+      
+              Toast.fire({
+                icon: 'warning',
+                title: "Please add category",
+      
+              })  
+        }else if(amount==null){
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                customClass: {
+                  popup: 'colored-toast'
+                },
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.addEventListener('mouseenter', Swal.stopTimer)
+                  toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+              })
+      
+              Toast.fire({
+                icon: 'warning',
+                title: "Please add amount",
+      
+              })  
+        }else if(image.length==0){
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                customClass: {
+                  popup: 'colored-toast'
+                },
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.addEventListener('mouseenter', Swal.stopTimer)
+                  toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+              })
+      
+              Toast.fire({
+                icon: 'warning',
+                title: "Please add amount",
+      
+              })  
+        }
+
         const data = new FormData()
         data.append('file', vdoFile)
         data.append("upload_preset", 'nefiqdoa')
-        await axios.post(`https://api.cloudinary.com/v1_1/dyn6m4tou/video/upload`, data).then((res) => {
+        await axios.post(`https://api.cloudinary.com/v1_1/dyn6m4tou/video/upload`, data).then(async(res) => {
             setVideoUrl(res.data.secure_url)
-            image.forEach(async (element) => {
+           
+            image.forEach( (element) => {
                 const data = new FormData()
                 data.append('file', element)
                 data.append("upload_preset", 'nefiqdoa')
-                await axios.post(`https://api.cloudinary.com/v1_1/dyn6m4tou/image/upload`, data).then(res => {
+                 axios.post(`https://api.cloudinary.com/v1_1/dyn6m4tou/image/upload`, data).then((res) => {
                     imageArray.push(res.data.secure_url)
+
                     let details = {
                         token: document.cookie,
                         selectedDaates: selectedDaates,
@@ -52,6 +151,9 @@ const navigate = useNavigate()
                         imageArray: imageArray,
                         videoUrl: videoUrl
                     }
+                        console.log(videoUrl);
+                        console.log(imageArray);
+                  setTimeout(()=>{
                     axios.post(`${UURL}submitProgram`, details).then(result => {
                         console.log(result.data);
                         if(result.data.Program){
@@ -60,11 +162,18 @@ const navigate = useNavigate()
                             navigate('/addPrograms')
                         }
                     })
+                },1000)
                 })
-            })
+            })             
+          
         }).catch(err => console.log(err))
-    }
 
+        setThrottleClick(true)
+        setTimeout(() => {
+            setThrottleClick(false);
+          }, 1000);
+    }
+    }
 
 
     const vdoUpload = async (e) => {
@@ -73,39 +182,87 @@ const navigate = useNavigate()
 
     const imageUpload = async (e) => {
         for (let i = 0; i < e.target.files.length; i++) {
-            setImage([...image, e.target.files[i]])
+        image.push( e.target.files[i])
+            
         }
+        
 
     }
+    
 
 
     useEffect(() => {
+        if(new Date(date) < new Date()){
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                customClass: {
+                  popup: 'colored-toast'
+                },
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.addEventListener('mouseenter', Swal.stopTimer)
+                  toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+              })
+      
+              Toast.fire({
+                icon: 'warning',
+                title: "Can't choose this date",
+      
+              })
+        }else{
 
-        if (selectedDaates.length == 0) {
-            setSelectedDates([...selectedDaates, date])
-            setMapDates([...mapDates, { date: date.toString().split(' '), key: Date.now() }])
-        } else {
-            new Promise((resolve, reject) => {
-                let set = {}
-                console.log(date.toISOString().slice(0, 10) < selectedDaates[0].toISOString().slice(0, 10));
-                for (let i = 0; i < selectedDaates.length; i++) {
-                    if (date.toISOString().slice(0, 10) == selectedDaates[i].toISOString().slice(0, 10)) {
-                        set.set = true
-                        break;
-                    } else {
-                        set.set = false
+            
+            if (selectedDaates.length == 0) {
+                setSelectedDates([...selectedDaates, date])
+                setMapDates([...mapDates, { date: date.toString().split(' '), key: Date.now() }])
+            } else {
+                new Promise((resolve, reject) => {
+                    let set = {}
+                    console.log(date.toISOString().slice(0, 10) < selectedDaates[0].toISOString().slice(0, 10));
+                    for (let i = 0; i < selectedDaates.length; i++) {
+                        if (date.toISOString().slice(0, 10) == selectedDaates[i].toISOString().slice(0, 10)) {
+                            set.set = true
+                            break;
+                        } else {
+                            set.set = false
+                        }
+                        resolve(set)
                     }
-                    resolve(set)
-                }
-            }).then((result) => {
-                if (result.set) {
-                } else {
-                    setSelectedDates([...selectedDaates, date])
-                    setMapDates([...mapDates, { date: date.toString().split(' '), key: Date.now() }])
-                }
-            })
+                }).then((result) => {
+                    if (result.set) {
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            customClass: {
+                              popup: 'colored-toast'
+                            },
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                              toast.addEventListener('mouseenter', Swal.stopTimer)
+                              toast.addEventListener('mouseleave', Swal.resumeTimer)
+                            }
+                          })
+                  
+                          Toast.fire({
+                            icon: 'warning',
+                            title: "You have already selcted this date",
+                  
+                          })
+                    } else {
+                        setSelectedDates([...selectedDaates, date])
+                        setMapDates([...mapDates, { date: date.toString().split(' '), key: Date.now() }])
+                    }
+                })
+            }
         }
     }, [date])
+
     return (
         <>
             <div className='container-fluid' >
@@ -142,7 +299,7 @@ const navigate = useNavigate()
 
                     </div>
                     <div className="col-12   d-flex justify-content-center text-black">
-                        <input type="file" style={{ width: '717px' }} className=' mt-2  email   border-darkGreen  border-4 rounded-lg bg-black mr-1 ' accept="image/*" multiple onChange={imageUpload} />
+                        <input type="file" style={{ width: '717px' }} className=' mt-2  email   border-darkGreen  border-4 rounded-lg bg-black mr-1 ' accept="image/*"  onChange={imageUpload} multiple/>
                         <div className='pos'>
                             <p className='upload-img text-white' >Upload Images</p>
                         </div>

@@ -5,7 +5,6 @@ import { fileURLToPath } from 'url'
 import db from './dbConfig/connection.mjs'
 import cors from 'cors'
 import bodyParser from 'body-parser'
-// import multer from 'multer'
 
 
 
@@ -16,7 +15,7 @@ import userRoutes from './routes/user.mjs';
 
 
 //..................
-    
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const app = express()

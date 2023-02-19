@@ -3,7 +3,16 @@ import { userSignup, userLogin, sendOtp } from '../controllers/userControllers.m
 // import {authenticateToken} from "../jwtMiddleware/jwtAuth.mjs"
 import { isUser } from '../controllers/userControllers.mjs'
 import { checkArtist } from '../controllers/userControllers.mjs'
-import {registerArtist, profilePic, bringDp, submitProgram,viewPrograms,takeSingleProgram,addPost} from '../controllers/userControllers.mjs'
+import {registerArtist,
+         profilePic,
+          bringDp, 
+          submitProgram,
+          viewPrograms,
+          takeSingleProgram,
+          addPost,
+          pickPosts,
+          bringAllpost,
+          fetchOneProgramBook} from '../controllers/userControllers.mjs'
 
 
 const router = express.Router();
@@ -38,7 +47,12 @@ router.route('/takeSingleProgram')
         .post(takeSingleProgram)
 router.route('/addPost')
         .post(addPost)
-
+router.route('/pickPosts')
+        .post(pickPosts)
+router.route('/bringAllpost')
+        .post(bringAllpost)
+router.route('/fetchOneProgramBook')
+        .post(fetchOneProgramBook)
 
 
 

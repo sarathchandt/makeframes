@@ -12,7 +12,10 @@ import {
     submitPgToDB,
     viewPr,
     tekeSingle,
-    addPosts
+    addPosts,
+    pickPostsDb,
+    bringPsts,
+    takeOnePg
 } from "./userHelpers/userHelper.mjs";
 
 
@@ -35,7 +38,8 @@ export function isUser(req, res) {
                 res.json({ user: false })
             } else { 
                 await User.findOne({email:user.email}).then((result)=>{
-                    res.json({ user: true, firstName:result.firstName, lastName:result.lastName }) 
+                    console.log(result);
+                    res.json({ user: true, firstName:result?.firstName, lastName:result?.lastName }) 
                 })
  
             }
@@ -77,13 +81,14 @@ export function registerArtist(req,res){
 }
 export function profilePic (req, res){
     savePropic(req.body).then(result=>{
-        res.json(result)
+        res .json(result)
+            .status(200)
     })
 }
 
 export function bringDp(req, res){
     takedp(req.body).then(result=>{
-        res.json(result)
+        res.json(result).status(200)
     });
     
 }
@@ -112,5 +117,25 @@ export function takeSingleProgram(req,res){
 export function addPost(req,res){
     addPosts(req.body).then(result=>{
         res.status(200).json(result)
+    })
+}
+
+export function pickPosts(req,res){
+    pickPostsDb(req.body).then(result=>{
+        res.status(200).json(result)
+    })
+}
+
+export function bringAllpost(req, res){
+    bringPsts(req.body).then(result=>{
+        res.status(200).json(result)
+    })
+}
+
+export function fetchOneProgramBook(req,res){
+    takeOnePg(req.body).then(result=>{
+        res.
+            json(result)
+            .status(200)
     })
 }

@@ -240,10 +240,10 @@ function SignupForm() {
     e.preventDefault();
     console.log(UURL);
     axios.post(`${UURL}signup`, details).then(result => {
-      console.log(result.data,"kkkk");
       if (!result.data.is && result.data.serverOtp) {
         navigate("/")      
         document.cookie = `${result.data.token}`
+        localStorage.setItem("token",result.data.token);
       
       } else {
         navigate('/signup');
