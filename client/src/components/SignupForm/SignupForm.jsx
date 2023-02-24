@@ -18,7 +18,6 @@ function SignupForm() {
   const [seePassword, setSeeRePassword] = useState('password')
   const [seeRePassword, setSeeReRePassword] = useState('password')
   const [check_here, setcheck_here] = useState(false)
-  const [firstnamecheck, setFirstnamecheck] = useState(false)
   const [otp, setOtp] = useState(null)
 
 
@@ -230,6 +229,7 @@ function SignupForm() {
 
 
   const sentOtp = () => {
+    console.log("llllllllllll");
     axios.post(`${UURL}otp`, { email: email }).then((response) => {
       console.log(response.data);
     })
@@ -243,7 +243,6 @@ function SignupForm() {
       if (!result.data.is && result.data.serverOtp) {
         navigate("/")      
         document.cookie = `${result.data.token}`
-        localStorage.setItem("token",result.data.token);
       
       } else {
         navigate('/signup');

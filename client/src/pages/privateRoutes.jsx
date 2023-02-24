@@ -1,4 +1,4 @@
-import { Outlet, Navigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import axios from "axios";
 import { UURL } from "../../API/apiCall";
 import React, { useEffect, useState } from 'react';
@@ -11,7 +11,6 @@ function privateRoutes() {
 
     useEffect(() => {
         const token = document.cookie
-        console.log(token);
              axios.post(`${UURL}loginCheck`, { token: token }).then((response) => {
                 setIsLogin(response.data.user)
             })

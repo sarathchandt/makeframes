@@ -28,3 +28,8 @@ body{
     height: 30px;
 
 }
+
+.blur{
+    filter: blur(8px);
+    -webkit-filter: blur(8px);
+  }

@@ -30,8 +30,21 @@ const signupSchema = new mongoose.Schema({
     domain:{
         type:String,
         default:'nothing'
+    },
+    bookings:{
+        type:[]
+    },
+    hype:{
+        type:[] 
+    },
+    connection:{
+        type:[]
+    },
+    hypeCount:{
+        type:Number,
+        default:0
     }
-
+ 
  
 
 })

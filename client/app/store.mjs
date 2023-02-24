@@ -7,6 +7,9 @@ import fetchSingleProgram from '../slices/singleProgramFetch.mjs'
 import takePost from '../slices/fetchPost.mjs'
 import bringAllProgram from '../slices/bringAllProgram.mjs'
 import fetchOnePg from "../slices/fetchProgramForBook.mjs"
+import booked from '../slices/bookProgram.mjs'
+import fetchBooked from '../slices/bookedDetailsFetch.mjs'
+import userFetch from '../slices/fetchUserAccoutHome.mjs'
 
 const store = configureStore({
     reducer : {
@@ -16,7 +19,10 @@ const store = configureStore({
         fetchSingleProgram:fetchSingleProgram,
         takePost : takePost,
         bringAllProgram:bringAllProgram,
-        fetchOnePg:fetchOnePg
+        fetchOnePg:fetchOnePg,
+        booked:booked,
+        fetchBooked:fetchBooked,
+        userFetch:userFetch
     },
    middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

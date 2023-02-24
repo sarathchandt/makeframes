@@ -12,13 +12,14 @@ function viewProgram() {
   const programs = useSelector(state => state.fetchProgram)
   const dispatch = useDispatch()
 
-  function gotoProgram(id) {
-    navigate({
-      pathname: '/viewSingleProgram',
-      search: createSearchParams({
-        id: id
-      }).toString()
-    })
+  function gotoProgram(id,book,programName) {
+        navigate({
+          pathname: '/viewSingleProgram',
+          search: createSearchParams({
+            id: id,
+            programName:programName
+          }).toString()
+        })
   }
 
 
@@ -38,52 +39,42 @@ function viewProgram() {
     })
   }, [])
 
-
+console.log(programs.programs?.data);
 
   return (
 
-    <div>
+    <div className='container-fluid'>
        {
            programs.loading ? <div>nothing</div> :
-      <div className="container-fluid  p-5">
-        <div className="row">
-          <div className="col-12">
-            <table className="table text-white" style={{ width: '100%' }} >
-              <thead className='' >
-                <tr>
-                  <th scope="col"></th>
-                  <th scope="col">Details</th>
-                  <th scope="col">Amount</th>
+          <>
+          <div className="row">
+            <div className=' col-md-2'></div>
+            <div className=' col-md-8'>
+              <div className="container-fluid">
+                <div className="row ">
+                  {programs.loading ? <></> : programs.programs?.data.map(obj => {
+                    return <div className=" col-lg-3 col-md-4  col-6 mt-3">
+                      <div className=' bg-dark1 m-1 rounded relative ' style={{ width: '100%', height: "100%" }}  >
+                        
+                        <img src={obj.imageArray?.length==0?'../../public/images/image-asset.jpeg':obj.imageArray[0]} alt="" className='object-cover pt-3 pe-3 ps-3' style={{ aspectRatio: '1 / 1' }} />
+                        <p className='d-flex justify-content-center text-light text-uppercase text-break font-extrabold m-1 p-3' style={{height:'50px',fontSize:'75%'}} >{obj.name}</p>
+                        <p className='d-flex justify-content-center cursor-pointer btn bg-darkGreen text-white1 m-3 hover:bg-red 'onClick={()=>{gotoProgram (obj._id,obj?.bookingCount,obj?.name )}}  >View booking  </p>
+                        <p className='d-flex justify-content-center cursor-pointer btn bg-darkGreen text-white1 m-3 hover:bg-red ' >Edit</p>
+                        { obj?.bookingCount == 0? <></>:<p className='badge bg-red text-white absolute top-1 right-1 '>{obj?.bookingCount} Booking</p>}
+                      </div>
 
-                  <th scope="col">Category</th>
-                  <th scope="col">Handle</th>
-                </tr>
-              </thead>
-              <tbody>
-              {programs.programs.data.map(obj=>{
-                  return <>
-              
-                <tr>
-                  <th scope="row"></th>
-                  <td>
-                  <img src={obj.imageArray[0]} className=' object-cover    p-1 w-70 ' style={{width:'150px', height:'150px'}} alt="Image Of Program" />
-                  <h1 className='text-green text-uppercase font-extrabold ' style={{ fontSize: '20px',wordWrap: 'break-word' }}>{obj.name}</h1>                  </td>
-                  <td className='text-red'>{obj.amount ?  obj.amount.toLocaleString():null} /-</td>
-
-                  <td>{obj.category}</td>
-                  <td>
-                    <button className='btn bg-darkGreen text-white hover:bg-darkGreen m-1'onClick={() => {
-                  gotoProgram(obj._id)
-                }}>Go to</button>
-                    <button className='btn bg-red text-white hover:bg-red m-1' >Block program </button>
-                  </td>
-                </tr>
-                </> }) }
-              </tbody>
-            </table>
+                    </div>
+                  })
+                  }
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+          </>
+
+
+
+      
 }
     </div>
 

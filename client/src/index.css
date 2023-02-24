@@ -10,3 +10,16 @@ body {
   font-family: inter;
   background-color: black;
 }
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+/* Track */
+::-webkit-scrollbar-track {
+  background: #A6BB8D; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #021710; 
+}

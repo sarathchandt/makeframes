@@ -4,7 +4,7 @@ import SignupForm from '../components/SignupForm/SignupForm'
 import Header from '../components/Home/Header'
 import axios from 'axios'
 import { UURL } from '../../API/apiCall'
-import LoginForm from "../components/Login/LoginForm";
+import LandingHome from '../components/LandingHome/landingHome'
 
 
 
@@ -31,7 +31,7 @@ useEffect(()=>{
   return (
     <div>
         <Header/>
-       { isLogin ? <LoginForm/> :<SignupForm/>} 
+       { isLogin ? <LandingHome/> :<SignupForm/>} 
       
     </div>
   )

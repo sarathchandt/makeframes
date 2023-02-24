@@ -33,9 +33,16 @@ const programSchema = new mongoose.Schema({
         type: String,
         require: true
     },
+    booking:{
+        type:[]
+    },
     user:{
         type:mongoose.Types.ObjectId,
         ref:'Users'
+    },
+    bookingCount:{
+        type:Number,
+        default:0
     }
    
 })

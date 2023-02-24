@@ -27,6 +27,7 @@ function LoginForm() {
     axios.post(`${UURL}login`, details).then(result => {
       if (result.data?.token && result.data.isuser && result.data.isPass) {
         document.cookie = `${result.data.token}`
+
         navigate('/')
       } else {
         navigate('/login')

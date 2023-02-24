@@ -151,11 +151,9 @@ const uploadForm = async () => {
                         imageArray: imageArray,
                         videoUrl: videoUrl
                     }
-                        console.log(videoUrl);
-                        console.log(imageArray);
+                        
                   setTimeout(()=>{
                     axios.post(`${UURL}submitProgram`, details).then(result => {
-                        console.log(result.data);
                         if(result.data.Program){
                             navigate('/viewPrograms')
                         }else{
@@ -222,7 +220,6 @@ const uploadForm = async () => {
             } else {
                 new Promise((resolve, reject) => {
                     let set = {}
-                    console.log(date.toISOString().slice(0, 10) < selectedDaates[0].toISOString().slice(0, 10));
                     for (let i = 0; i < selectedDaates.length; i++) {
                         if (date.toISOString().slice(0, 10) == selectedDaates[i].toISOString().slice(0, 10)) {
                             set.set = true

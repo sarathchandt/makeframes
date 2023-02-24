@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken'
 import {sendOtpMessage} from '../nodeMailer/nodeMailer.mjs'
 import User from '../model/signupModel.mjs'
 
+
 import {
     checkArtistNow,
     userSignupHlpr,
@@ -15,7 +16,13 @@ import {
     addPosts,
     pickPostsDb,
     bringPsts,
-    takeOnePg
+    takeOnePg,
+    bookPg,
+    takeBookedPg,
+    takeHostBooking,
+    programReject,
+    programAccept,
+    usersFetch
 } from "./userHelpers/userHelper.mjs";
 
 
@@ -28,7 +35,7 @@ export function userSignup(req, res) {
 }
 
 export function isUser(req, res) { 
-   
+    
     const token = req.body.token
     if (token == null) { 
         res.json({ user: false })
@@ -38,8 +45,8 @@ export function isUser(req, res) {
                 res.json({ user: false })
             } else { 
                 await User.findOne({email:user.email}).then((result)=>{
-                    console.log(result);
-                    res.json({ user: true, firstName:result?.firstName, lastName:result?.lastName }) 
+                    
+                    res.json({ user: true, firstName:result?.firstName, lastName:result?.lastName, id:result?._id }) 
                 })
  
             }
@@ -65,7 +72,7 @@ export  function sendOtp(req,res){
 }
 
 export function checkArtist(req,res){
-    checkArtistNow(req.body).then((result)=>{
+    checkArtistNow(res.locals.userId).then((result)=>{
         res
         .status(200)
         .json(result)
@@ -73,28 +80,28 @@ export function checkArtist(req,res){
 }
 
 export function registerArtist(req,res){
-    artistRegister(req.body).then((result)=>{
+    artistRegister(req.body, res.locals.userId).then((result)=>{
         res
         .status(200)
         .json(result)
     }) 
 }
 export function profilePic (req, res){
-    savePropic(req.body).then(result=>{
+    savePropic(req.body,res.locals.userId).then(result=>{
         res .json(result)
             .status(200)
     })
 }
 
 export function bringDp(req, res){
-    takedp(req.body).then(result=>{
+    takedp(res.locals.userId).then(result=>{
         res.json(result).status(200)
     });
     
 }
 
 export function submitProgram(req, res){
-    submitPgToDB(req.body).then((result)=>{
+    submitPgToDB(req.body,res.locals.userId).then((result)=>{
             res
             .status(200)
             .json(result)
@@ -102,7 +109,7 @@ export function submitProgram(req, res){
 } 
 
 export function viewPrograms(req, res){
-    viewPr(req.body).then(result=>{
+    viewPr(res.locals.userId).then(result=>{
         res
         .status(200) 
         .json(result)
@@ -115,19 +122,19 @@ export function takeSingleProgram(req,res){
     })
 }
 export function addPost(req,res){
-    addPosts(req.body).then(result=>{
+    addPosts(req.body,res.locals.userId).then(result=>{
         res.status(200).json(result)
     })
 }
 
 export function pickPosts(req,res){
-    pickPostsDb(req.body).then(result=>{
+    pickPostsDb(res.locals.userId, req.page).then(result=>{
         res.status(200).json(result)
     })
 }
 
 export function bringAllpost(req, res){
-    bringPsts(req.body).then(result=>{
+    bringPsts(res.locals.userId).then(result=>{
         res.status(200).json(result)
     })
 }
@@ -137,5 +144,41 @@ export function fetchOneProgramBook(req,res){
         res.
             json(result)
             .status(200)
+    })
+}
+
+export function bookProgram(req, res){
+    bookPg(req.body, res.locals.userId).then(result=>{
+        res.status(200).json(result)
+    })
+}
+
+export function fettchBookedPg(req, res){
+    takeBookedPg(res.locals.userId).then(result=>{
+        res.status(200).json(result)
+    })
+}
+
+export function takeBookingForHost(req, res){
+    takeHostBooking(req.body)
+    .then(result=>{
+        res.json(result).status(200)
+    })
+}
+export function rejectProgram(req, res){
+    programReject(req.body).then(result=>{
+        res.status(200).json(result)
+    })
+}
+
+export function acceptProgram(req, res){
+    programAccept(req.body).then(result=>{
+        res.status(200).json(result)
+    }) 
+}
+
+export function fetchUsers(req, res){
+    usersFetch(res.locals.userId).then(result=>{
+        res.status(200).json(result)
     })
 }

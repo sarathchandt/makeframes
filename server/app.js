@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url'
 import db from './dbConfig/connection.mjs'
 import cors from 'cors'
 import bodyParser from 'body-parser'
+import cookieParser from 'cookie-parser'
 
 
 
@@ -25,6 +26,7 @@ const app = express()
 //.....................
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(bodyParser.json());
+app.use(cookieParser());
 
 app.use(express.json({limit: "50mb"}));
 app.use(express.urlencoded({limit: "50mb", extended: true,  parameterLimit: 50000 })); 

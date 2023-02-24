@@ -1,16 +1,21 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import './App.css'
-import Home from './pages/Home'
-import Login from './pages/Login'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import './App.css';
+import Home from './pages/Home';
+import Login from './pages/Login';
 import Signup from "./pages/Signup"
-import PrivateRoutes from './pages/PrivateRoutes'
-import Profile from './pages/Profile'
-import ProfetionalProfile from'./pages/Profetional.jsx'
-import AddProgram from './pages/AddPrograms'
-import ViewPrograms from './pages/Viewprograms.jsx'
-import ViewSingleProgram from './pages/ViewSingleProgram'
-import ViewStageProgramUser from "./pages/ViewStageProgramUser"
-import ViewProgramDetails from './pages/ViewProgramDetails'
+import PrivateRoutes from './pages/PrivateRoutes';
+import Profile from './pages/Profile';
+import ProfetionalProfile from'./pages/Profetional.jsx';
+import AddProgram from './pages/AddPrograms';
+import ViewPrograms from './pages/Viewprograms.jsx';
+import ViewSingleProgram from './pages/ViewSingleProgram';
+import ViewStageProgramUser from "./pages/ViewStageProgramUser";
+import ViewProgramDetails from './pages/ViewProgramDetails';
+import ViewBookedProgram from './pages/viewUserBooked';
+import ViewHostBooking from './pages/ViewHostBooking';
+import ViewMap from './pages/ViewMap' 
+
+
 function App() {
 
 
@@ -26,7 +31,10 @@ function App() {
             <Route element={<ViewPrograms/>} path='/viewPrograms' />
             <Route element={<ViewSingleProgram/>} path = '/viewSingleProgram'/>
             <Route element={<ViewStageProgramUser/>} path='/viewStageProgramUser'/>
-            <Route element ={<ViewProgramDetails/>} path = '/viewProgramDetails'/>
+            <Route element={<ViewProgramDetails/>} path = '/viewProgramDetails'/>
+            <Route element={<ViewBookedProgram/>} path='/viewBookedProgram'/>
+            <Route element={<ViewHostBooking/>}  path ="/viewHostBook"/>
+            <Route element={<ViewMap/>} path={'/viewMap'} />
           </Route>
 
         
