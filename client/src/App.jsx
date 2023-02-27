@@ -14,6 +14,8 @@ import ViewProgramDetails from './pages/ViewProgramDetails';
 import ViewBookedProgram from './pages/viewUserBooked';
 import ViewHostBooking from './pages/ViewHostBooking';
 import ViewMap from './pages/ViewMap' 
+import UserPageForProfile from './pages/userProfilePageView'
+import ChatUserBox from './pages/chatPage'
 
 
 function App() {
@@ -35,6 +37,9 @@ function App() {
             <Route element={<ViewBookedProgram/>} path='/viewBookedProgram'/>
             <Route element={<ViewHostBooking/>}  path ="/viewHostBook"/>
             <Route element={<ViewMap/>} path={'/viewMap'} />
+            <Route element={<UserPageForProfile/>} path={'/UserPageForProfile'}/>
+            <Route element={<ChatUserBox/>} path = {'ChatUserBox'}/>
+            
           </Route>
 
         

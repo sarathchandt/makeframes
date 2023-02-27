@@ -12,6 +12,8 @@ const postSchema = new mongoose.Schema({
         type:mongoose.Types.ObjectId,
         ref:'User'
     }
-})
+},
+{ timestamps: true }
+)
 
 export default mongoose.model('Posts', postSchema);

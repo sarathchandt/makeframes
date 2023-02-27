@@ -22,6 +22,7 @@ function mapComp() {
 
 
     useEffect(() => {
+        mapboxgl.accessToken = '';
         new Promise((resolve, reject) => {
 
             navigator.geolocation.getCurrentPosition((pos) => {

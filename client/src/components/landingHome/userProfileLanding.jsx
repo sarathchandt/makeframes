@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import './landingHome.css'
-import { AiFillFileImage } from '@react-icons/all-files/ai/AiFillFileImage.esm'
 import axios from 'axios'
 import { UURL } from '../../../API/apiCall'
+import './landingHome.css'
+import { AiFillFileImage } from '@react-icons/all-files/ai/AiFillFileImage.esm'
 import { fetchPost } from '../../../slices/fetchPost.mjs'
 import { useDispatch, useSelector } from 'react-redux'
 import { AiFillMessage } from '@react-icons/all-files/ai/AiFillMessage.esm'
@@ -133,7 +133,7 @@ function userProfileLanding() {
         })
 
     }
-
+console.log(postCondition.post?.data);
     return (
         <div className='container-fluid mt-2'>
             {postCondition.loading ? <div>loading...</div> :
@@ -160,7 +160,7 @@ function userProfileLanding() {
                                     <div className="container-fluid">
                                         <div className="row mt-3">
                                             <div className="col-3">
-                                                <p>0 Posts</p>
+                                                <p>{postCondition.post?.data?.length} Posts</p>
                                             </div>
                                             <div className="col-3">
                                                 <p>0 Hype</p>
@@ -169,9 +169,11 @@ function userProfileLanding() {
                                                 {/* <p>0 Connections</p> */}
                                             </div>
                                             <div className="col-3"></div>
-                                            <div className="col-12 mt-3">
-                                                <p>{profileDetails?.domain}</p>
-                                                <p className='text-break'> {profileDetails?.about}</p>
+                                            <div className="col-12 mt-3 bg-green p-3 rounded">
+                                                <div className=' d-flex justify-content-end'>
+                                                <span className='bg-red p-1 rounded'>{profileDetails?.domain}</span>
+                                                </div>
+                                                <p className='text-break mb-2'> {profileDetails?.about}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -205,7 +207,6 @@ function userProfileLanding() {
                         <div className="col-12 ">
                             events
                         </div> :
-
                         <div className="col-12  ">
                             <div className="container-fluid">
                                 <div className="row mt-2">
@@ -221,11 +222,8 @@ function userProfileLanding() {
                                                                     <div className=' col-4 ' >
                                                                         <img className=' object-cover  m-2  cursor ' style={{ aspectRatio: '1 / 1' }} src={obj?.images[0]} alt="" />
                                                                     </div>
-
                                                                 </>
-
                                                             }
-
                                                             )}
                                                         </div>
                                                     </div>
@@ -238,92 +236,10 @@ function userProfileLanding() {
                                     </div>
                                     <div className="col-md-3">
                                     </div>
-
                                 </div>
                             </div>
-
-
                         </div>
                     }
-
-
-
-                    {/* <div className="d-flex justify-content-center   col-md-3">
-                        <div className='mb-3'>
-                        <img src={img} className=' d-md-block d-none rounded-circle  cursor ' style={{ width: '150px', height: '150px', objectFit:'cover' }} alt="" onClick={() => { addimage ? setAddimage(false) : setAddimage(true) }} />
-                        <img src={img} className=' d-md-none d-block rounded-circle  m-4 cursor ' alt="" style={{ height: '100px', width: '100px' }} onClick={() => { addimage ? setAddimage(false) : setAddimage(true) }} />
-                        <p className='text-white'>{profileDetails.firstName} {profileDetails.lastName}</p>
-                        <button className='flex justify-content-center p-2 mt-1 bg-green text-darkGreen font-bold' style={{width:'100%'}}> <AiFillMessage className='m-1 text-darkGreen'/>Message</button>
-
-                        </div>
-                        <div className={addimage ? ' bg-green  active add' : 'add bg-green'}>
-                            <div className="container-fluid">
-                                <div className="row ">
-                                    <div className='d-flex  justify-content-start col-12 mt-2 text-darkGreen cursor' onClick={() => {
-                                        setAddimage(false)
-                                    }}  ><MdCancel style={{ fontSize: '25px' }} /></div>
-                                    <div className='d-flex  justify-content-center text-darkGreen mt-5' >Add Profile Pic</div>
-                                    <div className="row bg-red">
-                                        <div className="d-flex justify-content-center mt-1 col-3 text-darkGreen ">
-                                            <MdAddBox style={{ fontSize: '30px' }} />
-                                        </div>
-
-                                        <div className='col-9' >   <div className='flex text-darkGreen'>
-                                            <input type='file' className='flex bg-red  cursor ' id='img' accept='image/*' onChange={(e) => { setDpimg(e.target.files[0]) }} />
-                                        </div>
-                                        </div>
-                                    </div>
-                                    <div className='col-7'></div>
-                                    <div className="col-4 btn bg-darkGreen text-white m-1 mt-3 " onClick={(e) => {
-                                        sendToBack(e);
-                                        setAddimage(false);
-                                    }}>Add</div>
-                                </div>
-                            </div>
-
-
-                        </div>
-
-                    </div> */}
-
-
-
-                    {/* <div className='d-md-block d-none col-md-6'>
-                        {
-                            postCondition.loading ? <div></div> :
-                                <div className='container-fluid'>
-                                    <div className='row '>
-                                        {postCondition.post?.data?.map(obj => {
-                                            return <>
-                                                <div className=' col-md-4 ' >
-                                                    <img className=' object-cover  m-2  cursor 'style={{aspectRatio: '1 / 1'}} src={obj?.images[0]} alt="" />
-                                                </div>
-                                                
-                                            </>
-
-                                        })}
-                                    </div>
-                                </div>
-                        }
-                    </div> */}
-                    {/* <div className='d-md-none d-block '>
-                        {
-                            postCondition.loading ? <div></div> :
-                                <div className='container-fluid '>
-                                    <div className='row '>
-                                        {postCondition.post?.data?.map(obj => {
-                                            return <>
-                                                <div className=' col-4 ' >
-                                                    <img className=' object-cover cursor m-2  ' style={{aspectRatio: '1 / 1'}} src={obj?.images[0]} alt="" />
-                                                </div>
-                                                
-                                            </>
-
-                                        })}
-                                    </div>
-                                </div>
-                        }
-                    </div> */}
                 </div>
             }
         </div>

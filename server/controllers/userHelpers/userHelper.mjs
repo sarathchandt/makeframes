@@ -2,9 +2,11 @@ import User from '../../model/signupModel.mjs'
 import Programs from '../../model/programModel.mjs'
 import Posts from '../../model/postModel.mjs'
 import Booking from '../../model/bookingModel.mjs'
+import Chat from '../../model/chatSchema.mjs'
 import { createJwt } from '../../middleware/jwtAuth.mjs'
 import { verifyOtp } from '../../nodeMailer/nodeMailer.mjs'
 import bcrypt from 'bcrypt'
+import { message } from '../userControllers.mjs'
 
 
 
@@ -330,4 +332,90 @@ export function usersFetch(email) {
     })
 
 
-}  
+}
+
+export function userDataFetch(id) {
+    return new Promise((resolve, reject) => {
+        User.findById(id.id).then(res => {
+            resolve(res)
+        })
+    })
+}
+
+export function postsForUser(id) {
+    return new Promise((resolve, reject) => {
+        Posts.find({ user: id.id }).sort({ createdAt: -1 }).then(res => {
+            resolve(res)
+        })
+    })
+}
+
+export function chat(content) {
+    return new Promise(async (resolve, reject) => {
+        const { from, to, message } = content;
+        const newMessage = await Chat.create({
+            message: message,
+            chatUsers: [from, to],
+            sender: from
+        })  
+        resolve(newMessage)
+    })
+}
+
+export function takeChat(body) {
+    
+    return new Promise(async (resolve, reject) => {
+        let newMessages = []
+        const from = body.userid1;
+        let to  = body.userid2
+       
+        await Chat.find({
+            chatUsers: {
+                $all: [from, to]
+            }
+        }).sort({ updateAt: 1 }).then(messages => {
+            messages.map(msg => {
+                newMessages.push({
+                    myself: msg.sender.toString() === from,
+                    message: msg.message,
+                    hr:msg.updatedAt.getHours(),
+                    min:msg.updatedAt.getMinutes()
+                })
+            })
+            resolve(newMessages)
+        })
+
+    })
+}
+
+export function takePeopleMessage(id, email) {
+     return new Promise((resolve, reject) => {
+        User.findOne({ email: email, MessagedPeople: id.toId }).then(res => {
+            if (!res) {
+                User.findOneAndUpdate({ email: email }, { $push: { MessagedPeople: id.toId } }).then(result => {
+                    resolve(result)
+                }).catch((error) => { console.log(error, "error"); })
+            } else {
+                resolve(res)
+            }
+
+        })
+    })
+}
+
+export function takeUsersChat(idArr) {
+    return new Promise(async (resolve, reject) => {
+        var arr = [];
+        
+        for (let i = 0; i < idArr.people.length; i++) {
+            
+            await User.findOne({ _id: idArr.people[i] }).then(res => {
+                arr.unshift(res)
+                if (arr.length == idArr.people.length) {
+                    resolve(arr)
+                }
+
+            })
+        }
+    })
+}

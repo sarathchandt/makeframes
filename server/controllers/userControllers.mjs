@@ -22,7 +22,13 @@ import {
     takeHostBooking,
     programReject,
     programAccept,
-    usersFetch
+    usersFetch,
+    userDataFetch,
+    postsForUser,
+    chat,
+    takeUsersChat,
+    takeChat,
+    takePeopleMessage
 } from "./userHelpers/userHelper.mjs";
 
 
@@ -181,4 +187,46 @@ export function fetchUsers(req, res){
     usersFetch(res.locals.userId).then(result=>{
         res.status(200).json(result)
     })
+}
+
+export function fetchUserData(req, res){
+    userDataFetch(req.body).then(result=>{
+        res.status(200).json(result)
+    })
+}
+
+export function fetchPostsOfUser(req, res){
+    postsForUser(req.body).then(result=>{
+        res.json(result).status(200)
+    })
+}
+
+export function message(req, res){
+    chat(req.body).then(result=>{
+        res.json(result).status(200)
+    }).catch(err=>{
+        res.json('internal server error').status(500)
+        console.log(err)});
+}
+
+export function getChat(req, res){
+    takeChat(req.body).then(result=>{
+        res.status(200).json(result)
+    }).catch(err=>{
+        res.status(500).json('internal server error')
+    })
+}
+
+export function tekeMessagePeople(req, res){
+    takePeopleMessage(req.body, res.locals.userId).then(result=>{
+        res.json(result).status(200)
+    }).catch(err=>{
+        res.status(500).json('internal server error')
+    })
+}
+
+export function takeUsersForChat(req, res){
+    takeUsersChat(req.body).then(result=>{
+        res.json(result).status(200)
+    }).catch(err=>{res.json('internal server error').status(500)})
 }

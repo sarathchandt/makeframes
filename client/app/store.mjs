@@ -1,5 +1,4 @@
 import {configureStore} from '@reduxjs/toolkit'
-import { getDefaultMiddleware } from '@reduxjs/toolkit'
 import checkLoginSlice from '../slices/checkLogin.mjs'
 import checkArstistSlice from '../slices/isArtist.mjs'
 import fetchProgramData from '../slices/Program.mjs'
@@ -10,6 +9,10 @@ import fetchOnePg from "../slices/fetchProgramForBook.mjs"
 import booked from '../slices/bookProgram.mjs'
 import fetchBooked from '../slices/bookedDetailsFetch.mjs'
 import userFetch from '../slices/fetchUserAccoutHome.mjs'
+import fetchUserData from '../slices/profileViewUser.mjs'
+import fetchPostsOfUser from '../slices/fetchUserPost.mjs'
+import loggedInUser from '../slices/loginUser.mjs'
+import chatSetup from '../slices/chatPerson.mjs'
 
 const store = configureStore({
     reducer : {
@@ -22,7 +25,13 @@ const store = configureStore({
         fetchOnePg:fetchOnePg,
         booked:booked,
         fetchBooked:fetchBooked,
-        userFetch:userFetch
+        userFetch:userFetch,
+        fetchUserData:fetchUserData,
+        fetchPostsOfUser:fetchPostsOfUser,
+        loggedInUser:loggedInUser,
+        chatSetup:chatSetup
+        
+        
     },
    middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

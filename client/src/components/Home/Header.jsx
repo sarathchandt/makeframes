@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux'
 import { changeState } from '../../../slices/isArtist.mjs'
+import {changeLoginState} from '../../../slices/loginUser.mjs'
 
 
 import './Header.css'
@@ -42,7 +43,7 @@ function Header() {
   const dispatch = useDispatch();
 
 
-  let is_artist = useSelector((state) => state.checkArtist.isArtist);
+  let is_artist = useSelector(state => state.checkArtist.isArtist);
 
   function RegistrationArtist(e) {
     e.preventDefault();
@@ -58,17 +59,19 @@ function Header() {
       }
     })
   }
-
+  console.log(is_artist,"kkk");
   useEffect(() => {
     const token = document.cookie
     axios.post(`${UURL}loginCheck`, { token: token }).then(response => {
       setLogin(response.data.user)
+      dispatch(changeLoginState(response.data.user))
       setFirstname(response.data?.firstName)
       setLastname(response.data?.lastName)
     })
 
     axios.post(`${UURL}checkArtist`, { token: token }).then((response) => {
       dispatch(changeState(response.data.isArtist))
+
     })
   })
 
@@ -89,7 +92,7 @@ function Header() {
           <p className='pl-8 text-sm cursor hover:text-red' onClick={() => {
             navigate("/")
           }}>About</p>
-          <p className='pl-8 text-sm cursor hover:text-red'>Approach Producers</p>
+          {/* <p className='pl-8 text-sm cursor hover:text-red'>Approach Producers</p> */}
 
           {
             login ? <p className='pl-8 text-sm cursor hover:text-red' onClick={() => {

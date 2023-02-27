@@ -18,6 +18,12 @@ import {registerArtist,
           rejectProgram,
           acceptProgram,
           fetchUsers,
+          fetchUserData,
+          fetchPostsOfUser,
+          message,
+          getChat,
+          takeUsersForChat,
+          tekeMessagePeople,
           bookProgram} from '../controllers/userControllers.mjs'
 
 import {verifyToken,verifyTokenHeader} from '../middleware/jsonWTMiddleWare.mjs'
@@ -73,7 +79,21 @@ router.route ('/acceptProgram')
         .post(verifyTokenHeader,acceptProgram)
 router.route ('/fetchUsers')
         .get(verifyTokenHeader,fetchUsers)
+router.route('/fetchUserData')
+        .post(verifyTokenHeader,fetchUserData)
+router.route('/fetchPostsOfUser')
+        .post(verifyTokenHeader,fetchPostsOfUser)
+router.route('/message')
+        .post(verifyTokenHeader,message)
+router.route('/getChat')
+        .post(verifyTokenHeader,getChat)
+router.route('/tekeMessagePeople')
+        .post(verifyTokenHeader,tekeMessagePeople)
+router.route('/takeUsersForChat')
+        .post(verifyTokenHeader,takeUsersForChat)
 
 
 
-export default router
+
+
+export default router 

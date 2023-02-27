@@ -7,10 +7,12 @@ import {useSelector} from 'react-redux'
 function Footer() {
 
 const fetchUser = useSelector(state=>state.userFetch)
+let is_loggedIn = useSelector(state => state.loggedInUser.loggedIn);
+
 
     return (
         <>
-            <div className={fetchUser.loading ? ' blur bg-darkGreen flex mt-10 justify-center':'bg-darkGreen flex mt-10 justify-center'}>
+            <div className={fetchUser.loading  ? ' blur bg-darkGreen flex mt-10 justify-center':'bg-darkGreen flex mt-10 justify-center'}>
                 <div className='container  grid  md:grid-cols-2 '>
 
                     <div className='bg-darkGreen  w-full footer hidden md:block '>

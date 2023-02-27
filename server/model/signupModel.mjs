@@ -43,6 +43,10 @@ const signupSchema = new mongoose.Schema({
     hypeCount:{
         type:Number,
         default:0
+    },
+    MessagedPeople:{
+        type:[],
+        require:true
     }
  
  
