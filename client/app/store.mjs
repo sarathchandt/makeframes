@@ -13,6 +13,9 @@ import fetchUserData from '../slices/profileViewUser.mjs'
 import fetchPostsOfUser from '../slices/fetchUserPost.mjs'
 import loggedInUser from '../slices/loginUser.mjs'
 import chatSetup from '../slices/chatPerson.mjs'
+import graph from '../slices/graphGrowthSlice.mjs'
+import bookingGraph from '../slices/bookingGraph.mjs'
+import details from '../slices/takeTotalDetails.mjs'
 
 const store = configureStore({
     reducer : {
@@ -29,10 +32,14 @@ const store = configureStore({
         fetchUserData:fetchUserData,
         fetchPostsOfUser:fetchPostsOfUser,
         loggedInUser:loggedInUser,
-        chatSetup:chatSetup
+        chatSetup:chatSetup,
+        graph:graph,
+        bookingGraph:bookingGraph,
+        details:details
         
         
     },
+
    middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,

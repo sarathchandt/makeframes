@@ -18,6 +18,7 @@ import {
     bringPsts,
     takeOnePg,
     bookPg,
+    usersAll,
     takeBookedPg,
     takeHostBooking,
     programReject,
@@ -229,4 +230,10 @@ export function takeUsersForChat(req, res){
     takeUsersChat(req.body).then(result=>{
         res.json(result).status(200)
     }).catch(err=>{res.json('internal server error').status(500)})
+}
+
+export function allUsers(req, res){
+    usersAll(res.locals.userId).then(result=>{
+        res.status(200).json(result)
+    })
 }

@@ -32,7 +32,7 @@ const bookSchema = new mongoose.Schema({
     },
     userID:{
         type:String,
-        require:true
+        require:true 
     },
     isAccepted:{  
         type:Boolean,
@@ -49,6 +49,6 @@ const bookSchema = new mongoose.Schema({
 
 
 
-})
+},{timestamps:true})
 
 export default mongoose.model('bookings', bookSchema);

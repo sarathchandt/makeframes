@@ -7,7 +7,6 @@ function chatPage() {
   return (
     <div><Header/>
           <ChatBox/>
-          <Footer/>
      </div>
   )
 }

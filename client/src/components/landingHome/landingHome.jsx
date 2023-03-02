@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchUserDetails } from '../../../slices/fetchUserAccoutHome.mjs'
 function LandingHome() {
 
-  const [category, setCategory] = useState(['Director', 'Actor', 'nothing'])
+  const [category] = useState(['Director', 'Actor', 'nothing'])
   const dispatch = useDispatch()
   const usersAcc = useSelector(state => state.userFetch)
   let is_loggedIn = useSelector(state => state.loggedInUser.loggedIn);

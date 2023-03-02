@@ -22,7 +22,7 @@ function mapComp() {
 
 
     useEffect(() => {
-        mapboxgl.accessToken = '';
+        mapboxgl.accessToken = import.meta.env.VITE_mapApi;
         new Promise((resolve, reject) => {
 
             navigator.geolocation.getCurrentPosition((pos) => {

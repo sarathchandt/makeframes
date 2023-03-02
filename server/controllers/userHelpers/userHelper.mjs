@@ -6,7 +6,6 @@ import Chat from '../../model/chatSchema.mjs'
 import { createJwt } from '../../middleware/jwtAuth.mjs'
 import { verifyOtp } from '../../nodeMailer/nodeMailer.mjs'
 import bcrypt from 'bcrypt'
-import { message } from '../userControllers.mjs'
 
 
 
@@ -135,6 +134,7 @@ export function savePropic(body, email) {
 
 
 export function takedp(email) {
+
     return new Promise(async (resolve, reject) => {
         await User.findOne({ email: email }
         ).then(res => {
@@ -250,6 +250,7 @@ export function takeBookedPg(email) {
     return new Promise((resolve, reject) => {
         Booking.find({ userID: email }).sort({ date: 1 }).populate('program_id').then(res => {
             resolve(res)
+            console.log(res,"kkkkkkkkkkkkkkkkkkkkkkkkkkk");
         })
     })
 }
@@ -417,5 +418,13 @@ export function takeUsersChat(idArr) {
 
             })
         }
+    })
+}
+
+export function usersAll(email){
+    return new Promise((resolve, reject) => {
+        User.find({ email: { $ne: email } }).sort({ hypeCount: -1 }).then(res => {
+            resolve(res)
+        })
     })
 }

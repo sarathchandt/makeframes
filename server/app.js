@@ -1,17 +1,20 @@
 import {} from 'dotenv/config'
 import express from 'express';
+import http from 'http'
 import path from 'path' ;
 import { fileURLToPath } from 'url'
 import db from './dbConfig/connection.mjs'
 import cors from 'cors'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
+import { Server as SocketIOServer, Socket } from 'socket.io';
 
 
 
 //.......................        
   
 import userRoutes from './routes/user.mjs';
+import adminRoutes from './routes/admin.mjs'
 
 
 
@@ -20,6 +23,7 @@ import userRoutes from './routes/user.mjs';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const app = express()
+const server = http.createServer(app);
 
 
 
@@ -37,7 +41,8 @@ app.use(cors({
     credentials: true,
     allowedHeaders: [
         'Content-Type', 
-        'Access'
+        'Access',
+        'Authorization'
     ]
 }))  
 
@@ -50,12 +55,50 @@ db.connect()
 //.......................
 
 app.use('/user',userRoutes);
+app.use('/admin',adminRoutes)
 
 
 
 
 
 
-app.listen(3033,()=>{ 
+// ...........soket ...........
+
+const io = new SocketIOServer(server, {
+    cors: {
+        origin:'http://localhost:8000',
+        methods:['POST', 'GET'],
+        credentials: true,
+        allowedHeaders: [
+            'Content-Type', 
+            'Access',
+            'Authorization'
+        ]
+    } 
+});
+// const onlineUsers = new Map();
+io.on("connection", async(socket) => { 
+    console.log('Client connected:', socket.id, new Date());
+
+    // socket.on("addUser", (id) => {
+    //     onlineUsers.set(id, socket.id);
+    // })
+    socket.on("send-msg", (data) => {
+        // var sendUserSocket = onlineUsers.get(data.to)
+        // if (sendUserSocket) {
+        //     console.log(onlineUsers);
+        //     console.log( sendUserSocket );
+        //     socket.to(sendUserSocket).emit('receive', data)
+        // }
+        socket.broadcast.emit('receive',data)
+    })
+    // Handle disconnections
+    socket.on('disconnect', () => {
+        console.log('Client disconnected:', socket.id);
+    });
+})
+
+
+server.listen(3033,()=>{ 
     console.log('sset');
 })

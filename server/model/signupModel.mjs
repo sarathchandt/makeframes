@@ -47,10 +47,18 @@ const signupSchema = new mongoose.Schema({
     MessagedPeople:{
         type:[],
         require:true
+    },
+    isProducer:{
+        type:Boolean,
+        default:false
+    },
+    isBlocked:{
+        type:Boolean,
+        default:false
     }
  
  
 
-})
+},{timestamps:true})
 
 export default mongoose.model('Users',signupSchema)

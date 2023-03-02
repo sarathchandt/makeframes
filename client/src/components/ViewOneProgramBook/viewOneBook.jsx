@@ -383,7 +383,7 @@ function viewOneBook() {
                                         <div className='ps-4 pe-4 pb-4 rounded' style={{ width: '100%', height: '300px' }}>
                                             <Map
 
-                                                mapboxAccessToken=""
+                                                mapboxAccessToken= {import.meta.env.VITE_mapApi}
                                                 initialViewState={viewport}
                                                 mapStyle="mapbox://styles/mapbox/streets-v11"
                                                 onClick={(e) => { putSetMark(e) }}

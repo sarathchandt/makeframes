@@ -1,29 +1,54 @@
-import React, { useEffect, useState,useRef } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import axios from 'axios'
 import { useSearchParams } from 'react-router-dom'
 import { UURL } from '../../../API/apiCall'
+import { io } from "socket.io-client";
+import { debounce } from 'lodash';
+
+
 
 import './chatBox.css'
 
 function chatUser() {
 
-  const [searchParams] = useSearchParams()
   const [people, setPeople] = useState([])
+  const [socketMessages, setSocketMessages] = useState(null)
   const [chatNow, setChatNow] = useState([])
   const [self, setSelf] = useState({})
-  const [person, setPerson] = useState({})
+  const [person, setPerson] = useState(null)
   const [unique, setUnique] = useState(true)
+  const [searchParams] = useSearchParams()
   const [inputMessage, setInputMessage] = useState('')
+  const [uniq, setuniq] = useState(true)
+
+  // ......................................
+
+  // ......................................
+
+
+
+
+
 
   const messageRef = useRef();
+  const socket = useRef();
+  useEffect(() => {
 
-  useEffect(()=>{
-    messageRef.current?.scrollIntoView({behavior:'smooth'})
+    socket.current = io.connect("http://localhost:3033")
+    if (self?._id) {
 
-  },[inputMessage])
+      socket.current.emit("addUser", self._id);
+    }
+  }, [self._id])
+
+
+  useEffect(() => {
+    messageRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [inputMessage])
 
 
   function setupPerson(obj) {
+
 
 
     axios.post(`${UURL}getChat`, { userid2: obj._id, userid1: self._id }, { withCredentials: true }).then(res => {
@@ -31,20 +56,25 @@ function chatUser() {
     })
     setPerson(obj)
   }
-console.log(chatNow);
- 
-  function sendMsg(){
-    console.log(inputMessage);
-    const messages={
-      myself:true,
-      message:inputMessage,
-      hr:new Date().getHours(),
-      min:new Date().getMinutes()
+
+  function sendMsg() {
+    const messages = {
+      myself: true,
+      message: inputMessage,
+      hr: new Date().getHours(),
+      min: new Date().getMinutes()
     }
-    axios.post(`${UURL}message`,{from:self._id, to:person._id, message:inputMessage},{withCredentials:true});
-     setChatNow(chatNow.concat(messages))
-     setInputMessage('')
-     
+
+    socket.current.emit("send-msg", {
+      to: person._id,
+      messages: inputMessage,
+      from: self._id
+    });
+
+    axios.post(`${UURL}message`, { from: self._id, to: person._id, message: inputMessage }, { withCredentials: true });
+    setChatNow(chatNow.concat(messages))
+    setInputMessage('')
+
   }
 
   useEffect(() => {
@@ -57,12 +87,39 @@ console.log(chatNow);
 
         setSelf(res?.data);
 
+
         setTimeout(() => {
           setUnique(true)
         }, 1000)
       })
     }
   }, [])
+  useEffect(() => {
+
+    if (socket.current) {
+
+      socket.current.on("receive", (data) => {
+       
+
+          axios.get(`${UURL}bringDp`, { withCredentials: true }).then(res=>{
+            console.log(res.data._id, "ll", data.from);
+            if (res.data._id != data.from) {
+              setSocketMessages({ myself: false, message: data.messages });
+            }
+          })
+       
+        
+      })
+
+    }
+
+  }, [socketMessages])
+
+  useEffect(() => {
+    socketMessages && setChatNow((pre) => [...pre, socketMessages]);
+  }, [socketMessages]);
+
+  console.log(chatNow);
 
   return (
     <div>
@@ -111,7 +168,7 @@ console.log(chatNow);
 
 
               <div class="col-12 col-lg-7 col-xl-9">
-                {person._id ? <>
+                {person ? <>
                   <div class="py-2 px-4 border-bottom d-none d-lg-block">
                     <div class="d-flex align-items-center py-1">
                       <div class="position-relative">
@@ -135,29 +192,29 @@ console.log(chatNow);
                         return <>
 
                           <div class="chat-messages p-4" >
-                          {obj.myself ?<></>: 
-                            <div class="chat-message-left pb-4 text-dark " >
-                              <div>
-                                <img src={person?.dpimage ? person?.dpimage : "../../public/images/146-1468295_business-man-profile-icon-business-profile-icon-png.png"} class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40" />
-                                <div class="text-muted small text-nowrap mt-2">{obj?.hr}:{obj?.min}</div>
-                              </div>
-                              <div class="flex-shrink-1 bg-light rounded py-2 px-3 ml-3" ref={messageRef}>
-                                {obj?.message}
-                              </div>
+                            {obj.myself ? <></> :
+                              <div class="chat-message-left pb-4 text-dark " >
+                                <div>
+                                  <img src={person?.dpimage ? person?.dpimage : "../../public/images/146-1468295_business-man-profile-icon-business-profile-icon-png.png"} class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40" />
+                                  <div class="text-muted small text-nowrap mt-2">{obj?.hr}:{obj?.min}</div>
+                                </div>
+                                <div class="flex-shrink-1 bg-light rounded py-2 px-3 ml-3" ref={messageRef}>
+                                  {obj?.message}
+                                </div>
 
-                            </div>}
+                              </div>}
 
-                            {obj.myself ? 
-                            <div class="chat-message-right mb-4 text-darkGreen" >
-                              <div>
-                                <img src="../../public/images/146-1468295_business-man-profile-icon-business-profile-icon-png.png" class="rounded-circle mr-1" alt="Chris Wood" width="40" height="40" />
-                                <div class="text-muted small text-nowrap mt-2">{obj?.hr}:{obj?.min}</div>
-                              </div>
-                              <div class="flex-shrink-1 bg-light rounded py-2 px-3 mr-3" ref={messageRef}>
-                                <div class="font-weight-bold mb-1">You</div>
-                                {obj?.message}
-                              </div>
-                            </div>:<></>}
+                            {obj.myself ?
+                              <div class="chat-message-right mb-4 text-darkGreen" >
+                                <div>
+                                  <img src="../../public/images/146-1468295_business-man-profile-icon-business-profile-icon-png.png" class="rounded-circle mr-1" alt="Chris Wood" width="40" height="40" />
+                                  <div class="text-muted small text-nowrap mt-2">{obj?.hr}:{obj?.min}</div>
+                                </div>
+                                <div class="flex-shrink-1 bg-light rounded py-2 px-3 mr-3" ref={messageRef}>
+                                  <div class="font-weight-bold mb-1">You</div>
+                                  {obj?.message}
+                                </div>
+                              </div> : <></>}
                           </div>
                         </>
                       }) : <>
@@ -169,8 +226,8 @@ console.log(chatNow);
 
                   <div class="flex-grow-0 py-3 px-4 border-top">
                     <div class="input-group">
-                      <input type="text" class="form-control" placeholder="Type your message" value={inputMessage} onChange={(e)=>{setInputMessage(e.target.value)}}/>
-                      <button class="btn btn-primary" onClick={()=>{
+                      <input type="text" class="form-control" placeholder="Type your message" value={inputMessage} onChange={(e) => { setInputMessage(e.target.value) }} />
+                      <button class="btn btn-primary" onClick={() => {
                         sendMsg()
                       }}>Send</button>
                     </div>

@@ -24,6 +24,7 @@ import {registerArtist,
           getChat,
           takeUsersForChat,
           tekeMessagePeople,
+          allUsers,
           bookProgram} from '../controllers/userControllers.mjs'
 
 import {verifyToken,verifyTokenHeader} from '../middleware/jsonWTMiddleWare.mjs'
@@ -53,6 +54,7 @@ router.route ('/profilePic')
         .post(verifyToken,profilePic)
 router.route ('/bringDp')
         .post(verifyToken,bringDp)
+        .get(verifyTokenHeader,bringDp)
 router.route ('/submitProgram')
         .post(verifyToken,submitProgram)
 router.route ('/viewPrograms')
@@ -91,7 +93,8 @@ router.route('/tekeMessagePeople')
         .post(verifyTokenHeader,tekeMessagePeople)
 router.route('/takeUsersForChat')
         .post(verifyTokenHeader,takeUsersForChat)
-
+router.route('/allUsers')
+        .get(verifyTokenHeader,allUsers)
 
 
 
