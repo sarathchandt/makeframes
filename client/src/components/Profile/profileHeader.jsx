@@ -33,7 +33,7 @@ function profileHeader() {
                         <img src="../../../public/images/146-1468295_business-man-profile-icon-business-profile-icon-png.png" className='rounded-full' alt="" />
             
                 </div>
-                <div className='col-md-9' >/?/./........................../?/</div>
+                <div className='col-md-9' ></div>
             </div>
             </div>
         </div>

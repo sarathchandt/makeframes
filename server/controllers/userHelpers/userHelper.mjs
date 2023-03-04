@@ -2,6 +2,8 @@ import User from '../../model/signupModel.mjs'
 import Programs from '../../model/programModel.mjs'
 import Posts from '../../model/postModel.mjs'
 import Booking from '../../model/bookingModel.mjs'
+import Description from '../../model/descriptionModel.mjs'
+import Category from '../../model/categoryModel.mjs '
 import Chat from '../../model/chatSchema.mjs'
 import { createJwt } from '../../middleware/jwtAuth.mjs'
 import { verifyOtp } from '../../nodeMailer/nodeMailer.mjs'
@@ -85,6 +87,7 @@ export function userLoginHlpr({ email, password }) {
                     status.isuser = true
                     status.isPass = true
                     status.token = token
+                    status.blocked = user.isBlocked
                     resolve(status)
                 } else {
                     status.isuser = true
@@ -112,6 +115,7 @@ export function checkArtistNow(email) {
 }
 
 export function artistRegister(details, email) {
+    console.log(details.domain);
     return new Promise(async (resolve, reject) => {
         await User.updateOne({ email: email }, { $set: { isArtist: true, about: details.about, domain: details.domain } }).then(() => {
             resolve({ artistDone: true })
@@ -146,6 +150,7 @@ export function takedp(email) {
     })
 }
 export function submitPgToDB(programDetails, email) {
+    console.log(email, 'kkkk');
     return new Promise(async (resolve, reject) => {
         await User.find({ email: email }).then((result) => {
             new Programs({
@@ -205,7 +210,7 @@ export function addPosts(body, email) {
 export function pickPostsDb(email, page) {
     return new Promise(async (resolve, reject) => {
         await User.findOne({ email: email }).then(user => {
-            Posts.find({ user: user._id }).limit(9 * page).then(res => {
+            Posts.find({ user: user._id }).sort({ createdAt: -1 }).limit(9 * page).then(res => {
 
                 resolve(res)
             })
@@ -217,7 +222,8 @@ export function pickPostsDb(email, page) {
 export function bringPsts(email) {
     return new Promise(async (resolve, reject) => {
         await User.findOne({ email: email }).then(async (res) => {
-            await Programs.find({ user: { $ne: res._id } }).then(Programs => {
+            console.log(res);
+            await Programs.find({ user: { $ne: res._id }, isBlocked: false }).then(Programs => {
                 resolve(Programs)
             })
         })
@@ -227,7 +233,7 @@ export function bringPsts(email) {
 
 export function takeOnePg(id) {
     return new Promise((resolve, reject) => {
-        Programs.findById(id.id).then(result => {
+        Programs.findById(id.id).populate('user').then(result => {
             resolve(result)
         })
     })
@@ -236,7 +242,7 @@ export function takeOnePg(id) {
 export function bookPg(bookingDetatils, email) {
     let booking = { ...bookingDetatils, userID: email }
     return new Promise((resolve, reject) => {
-        Programs.findOneAndUpdate({ _id: booking.program_id }, { $inc: { bookingCount: 1 } }, { new: true }, (err, data) => {
+        Programs.findOneAndUpdate({ _id: booking.program_id }, { $inc: { bookingCount: 1 }, $push: { selectedDaates: bookingDetatils.date } }, { new: true }, (err, data) => {
             if (err) console.log(err);
             console.log(data);
         })
@@ -250,7 +256,6 @@ export function takeBookedPg(email) {
     return new Promise((resolve, reject) => {
         Booking.find({ userID: email }).sort({ date: 1 }).populate('program_id').then(res => {
             resolve(res)
-            console.log(res,"kkkkkkkkkkkkkkkkkkkkkkkkkkk");
         })
     })
 }
@@ -358,18 +363,18 @@ export function chat(content) {
             message: message,
             chatUsers: [from, to],
             sender: from
-        })  
+        })
         resolve(newMessage)
     })
 }
 
 export function takeChat(body) {
-    
+
     return new Promise(async (resolve, reject) => {
         let newMessages = []
         const from = body.userid1;
-        let to  = body.userid2
-       
+        let to = body.userid2
+
         await Chat.find({
             chatUsers: {
                 $all: [from, to]
@@ -379,8 +384,8 @@ export function takeChat(body) {
                 newMessages.push({
                     myself: msg.sender.toString() === from,
                     message: msg.message,
-                    hr:msg.updatedAt.getHours(),
-                    min:msg.updatedAt.getMinutes()
+                    hr: msg.updatedAt.getHours(),
+                    min: msg.updatedAt.getMinutes()
                 })
             })
             resolve(newMessages)
@@ -390,7 +395,7 @@ export function takeChat(body) {
 }
 
 export function takePeopleMessage(id, email) {
-     return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
         User.findOne({ email: email, MessagedPeople: id.toId }).then(res => {
             if (!res) {
                 User.findOneAndUpdate({ email: email }, { $push: { MessagedPeople: id.toId } }).then(result => {
@@ -407,9 +412,9 @@ export function takePeopleMessage(id, email) {
 export function takeUsersChat(idArr) {
     return new Promise(async (resolve, reject) => {
         var arr = [];
-        
+
         for (let i = 0; i < idArr.people.length; i++) {
-            
+
             await User.findOne({ _id: idArr.people[i] }).then(res => {
                 arr.unshift(res)
                 if (arr.length == idArr.people.length) {
@@ -421,10 +426,66 @@ export function takeUsersChat(idArr) {
     })
 }
 
-export function usersAll(email){
+export function usersAll(email) {
     return new Promise((resolve, reject) => {
         User.find({ email: { $ne: email } }).sort({ hypeCount: -1 }).then(res => {
             resolve(res)
         })
+    })
+}
+
+export function descTake() {
+    return new Promise((resolve, rejecct) => {
+        Description.find().then(res => {
+            resolve(res)
+        })
+    })
+}
+
+export function postDelete({ id }) {
+    return new Promise((resolve, rejecct) => {
+        Posts.findOneAndDelete({ _id: id }).then(res => {
+            resolve({ delete: true })
+        })
+    })
+}
+
+export function hypeNow(email, userid) {
+    console.log('kkkkkkk');
+    return new Promise((resolve, reject) => {
+        User.updateOne({ _id: userid.userId, hype: { $nin: [email] } }, { $push: { hype: email } }).then((res) => {
+                    resolve()
+            
+        })
+    })
+}
+
+
+export function unHypeNow(email, userid) {
+    console.log(userid);
+    return new Promise((resolve, reject) => {
+            User.updateOne({ _id: userid.userId}, { $pull: { hype:email} }).then(res => {
+                resolve()
+            })        
+    }) 
+}
+
+export function hypeStatus(email, user) {
+    return new Promise((resolve, rejecct) => {
+        User.findOne({ _id: user.userId, hype: [email] }).then(res => {
+            if (!res) {
+                resolve({ hype: false })
+            } else {
+                resolve({ hype: true })
+            }
+        })
+    })
+}
+
+export function takeCategory(){
+    return new Promise((resolve, rejecct)=>{
+         Category.find({user:true}).then(res=>{
+            resolve(res)
+         })
     })
 }

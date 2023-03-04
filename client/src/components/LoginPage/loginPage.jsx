@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React,{useState} from 'react'
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 import { UARL } from '../../../API/apiCall'
 
 import './loginPage.css'
@@ -15,6 +15,7 @@ function loginPage() {
 
         function login(){
             axios.post(`${UARL}loginAdmin`,{password:password,adminId:adminId}).then(res=>{
+                
                 console.log(res.data);
                 if(res.data.admin){
                     localStorage.setItem('adminToken', res.data.token);

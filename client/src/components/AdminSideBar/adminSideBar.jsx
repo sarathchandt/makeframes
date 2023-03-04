@@ -17,7 +17,7 @@ function adminSideBar() {
     const navigate = useNavigate()
     return (
         <div>
-            <div id="sidebar" class="h-screen w-16 menu bg-darkGreen text-white px-4 flex items-center  static fixed shadow">
+            <div id="sidebar" class="d-md-block d-none h-screen w-16 menu bg-darkGreen text-white px-4 flex items-center  static fixed shadow">
 
                 <ul class="list-reset ">
                     <li class="my-2 md:my-0 flex mb-4">
@@ -36,18 +36,18 @@ function adminSideBar() {
                         </a>
                     </li>
                     <li class="my-2 md:my-0 flex mb-4">
-                        <a href="#" class="block py-1 md:py-3 pl-1 align-middle text-gray-600 no-underline hover:text-indigo-400 mb-2">
-                            <i className=""><MdEventNote className='text-white text-2xl' /></i><span class="w-full inline-block pb-1 md:pb-0 text-sm text-white">Programs</span>
+                        <a  class="block cursor-pointer py-1 md:py-3 pl-1 align-middle text-gray-600 no-underline hover:text-indigo-400 mb-2"  onClick={() => { navigate('/adminBookingList') }}>
+                            <i className=""><MdEventNote className='text-white text-2xl' /></i><span class="w-full inline-block pb-1 md:pb-0 text-sm text-white" >Programs</span>
                         </a>
                     </li>
                     <li class="my-2 md:my-0 flex mb-4">
-                        <a href="#" class="block py-1 md:py-3 pl-1 align-middle text-gray-600 no-underline hover:text-indigo-400 mb-2">
+                        <a  class="block cursor-pointer py-1 md:py-3 pl-1 align-middle text-gray-600 no-underline hover:text-indigo-400 mb-2" onClick={() => { navigate('/adminCategory') }}>
                             <i className=""><BiIntersect className='text-white text-2xl' /></i><span class="w-full inline-block pb-1 md:pb-0 text-sm text-white">Categories</span>
                         </a>
                     </li>
                     <li class="my-2 md:my-0 flex mb-4">
-                        <a href="#" class="block py-1 md:py-3 pl-1 align-middle text-gray-600 no-underline hover:text-indigo-400 mb-2">
-                            <i className=""><MdDescription className='text-white text-2xl' /></i><span class="w-full inline-block pb-1 md:pb-0 text-sm text-white">Description</span>
+                        <a  class="block cursor-pointer py-1 md:py-3 pl-1 align-middle text-gray-600 no-underline hover:text-indigo-400 mb-2" onClick={() => { navigate('/adminDescription') }}>
+                            <i className=""><MdDescription className='text-white text-2xl' /></i><span class="w-full inline-block pb-1 md:pb-0 text-sm text-white" >Description</span>
                         </a>
                     </li>
                     <li class="my-2 md:my-0 flex mb-4">

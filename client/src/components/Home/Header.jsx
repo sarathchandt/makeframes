@@ -36,7 +36,7 @@ function Header() {
   const [proprofile, setProprofile] = useState(false)
   const [domain, setDomain] = useState('')
   const [about, setAbout] = useState('')
-
+  const [category, setCategory]=useState([])
   
 
 
@@ -54,8 +54,9 @@ function Header() {
       token:token
     }
     axios.post(`${UURL}registerArtist`, data).then((result) => {
-      if(artistDone){
+      if(result.data.artistDone==true){
         navigate('/profetionalProfile')
+        
       }
     })
   }
@@ -69,12 +70,18 @@ function Header() {
       setLastname(response.data?.lastName)
     })
 
+    axios.get(`${UURL}getDomain`,{withCredentials:true}).then(res=>{
+      console.log(res);
+      setCategory(res.data)
+    })
     axios.post(`${UURL}checkArtist`, { token: token }).then((response) => {
       dispatch(changeState(response.data.isArtist))
-
+      console.log(response);
+      
     })
-  })
-
+  },[])
+  
+  console.log(category);
 
   const navigate = useNavigate();
   return (
@@ -151,9 +158,12 @@ function Header() {
                 <div className='d-flex  justify-content-center col-12 text-darkGreen  ' >
                   <select className='bg-green border border-3 rounded w-full m-2 border-darkGreen mb-4' onClick={(e) => { setDomain(e.target.value) }}   >
                   <option value="" style={{ display: 'none' }} >Choose </option>
-                    <option value="Director" className='bg-darkGreen text-white'  >Director</option>
-                    <option value="Actor" className='bg-darkGreen text-white' >Actor</option>
-                    <option value="Actress" className='bg-darkGreen text-white'  >Actress</option>
+                    {category?.map(e=>{
+                      return <>
+                      <option value={e?.name } className='bg-darkGreen text-white'  >{e?.name}</option>
+                    </>})
+                    } 
+                   
 
                   </select>
                 </div>

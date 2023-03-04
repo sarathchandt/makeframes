@@ -12,6 +12,7 @@ import {
     takedp,
     submitPgToDB,
     viewPr,
+    descTake,
     tekeSingle,
     addPosts,
     pickPostsDb,
@@ -27,9 +28,14 @@ import {
     userDataFetch,
     postsForUser,
     chat,
+    unHypeNow,
     takeUsersChat,
     takeChat,
-    takePeopleMessage
+    takePeopleMessage,
+    postDelete,
+    hypeNow,
+    hypeStatus,
+    takeCategory
 } from "./userHelpers/userHelper.mjs";
 
 
@@ -53,7 +59,7 @@ export function isUser(req, res) {
             } else { 
                 await User.findOne({email:user.email}).then((result)=>{
                     
-                    res.json({ user: true, firstName:result?.firstName, lastName:result?.lastName, id:result?._id }) 
+                    res.json({ user: true, firstName:result?.firstName, lastName:result?.lastName, id:result?._id, blocked:result?.isBlocked }) 
                 })
  
             }
@@ -234,6 +240,41 @@ export function takeUsersForChat(req, res){
 
 export function allUsers(req, res){
     usersAll(res.locals.userId).then(result=>{
+        res.status(200).json(result)
+    })
+}
+
+export function takeDescription (req, res){
+    descTake().then(result=>{
+        res.json(result).status(200)
+    })
+}
+
+export function deletePost(req, res){
+    postDelete(req.body).then(result=>{
+        res.json(result).status(200)
+    })
+}
+
+export function hypeHim(req, res){
+    hypeNow(res.locals.userId, req.body).then(result=>{
+        res.json(result).status(200)
+    })
+}
+export function unHypeHim(req, res){
+    unHypeNow(res.locals.userId, req.body).then(result=>{
+        res.json(result).status(200)
+    })
+}
+
+export function takeHypeStatus(req,res){
+    hypeStatus(res.locals.userId,req.body).then(result=>{
+        res.json(result).status(200)
+    })
+}
+
+export function getDomain(req, res){
+    takeCategory().then(result=>{
         res.status(200).json(result)
     })
 }

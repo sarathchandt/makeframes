@@ -22,11 +22,11 @@ import AdminPrivateRoutes from './pages/AdminPrivateRoutes'
 
 import AdminLogin from './pages/AdminLogin'
 import AdminLanding from './pages/AdminLanding'
-import ProtectedAdminroute from './pages/protectedAdminRoute'
 import AdminArtistList from './pages/AdminArtistList'
 import AdminProducerList from './pages/AdminProducerList'
-
-
+import AdminBookingList from './pages/AdminBookingList'
+import AdminCategory from './pages/AdminCategory'
+import AdminDescription from './pages/AdminDescription'
 function App() {
 
 
@@ -47,7 +47,7 @@ function App() {
             <Route element={<ViewHostBooking />} path="/viewHostBook" />
             <Route element={<ViewMap />} path={'/viewMap'} />
             <Route element={<UserPageForProfile />} path={'/UserPageForProfile'} />
-            <Route element={<ChatUserBox />} path={'ChatUserBox'} />
+            <Route element={<ChatUserBox />} path={'/ChatUserBox'} />
 
           </Route>
 
@@ -62,13 +62,14 @@ function App() {
             <Route element ={ <AdminArtistList/>} path ='/adminArtistList'/>
             <Route element={<AdminLanding />} path='/admin' />
             <Route element={<AdminProducerList/>} path='/adminProducerList'/>
+            <Route element={<AdminBookingList/>} path = '/adminBookingList'/>
+            <Route element={<AdminCategory/>} path = '/adminCategory'/>
+            <Route element={<AdminDescription/>} path = '/adminDescription'/>
           </Route>
 
 
 
-          <Route element={<ProtectedAdminroute />} >
             <Route path='/adminLogin' element={<AdminLogin />} />
-          </Route>
 
 
 

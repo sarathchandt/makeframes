@@ -9,7 +9,7 @@ const initialState={
     posts:[]
 }
 
-export const  fetchPostsOfUser= createAsyncThunk('post/fetchPostsOfUser',async(id)=>{
+export const  fetchPostsOfUser = createAsyncThunk('post/fetchPostsOfUser',async(id)=>{
     return await axios.post(`${UURL}fetchPostsOfUser`,{id:id},{withCredentials:true})
 })
 

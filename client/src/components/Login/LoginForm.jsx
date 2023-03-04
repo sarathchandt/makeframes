@@ -4,6 +4,7 @@ import Swal from 'sweetalert2'
 import { UURL } from '../../../API/apiCall'
 import axios from 'axios'
 import "./LoginForm.css"
+import toast, { Toaster } from 'react-hot-toast';
 
 
 
@@ -25,54 +26,29 @@ function LoginForm() {
   const login = (e) => {
     e.preventDefault();
     axios.post(`${UURL}login`, details).then(result => {
-      if (result.data?.token && result.data.isuser && result.data.isPass) {
+      
+      console.log(result);
+      if (result.data?.token && result.data.isuser && result.data.isPass && result.data.blocked == false) {
         document.cookie = `${result.data.token}`
 
         navigate('/')
       } else {
         navigate('/login')
         if( result.data.isuser==false){
-          const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            customClass: {
-              popup: 'colored-toast'
-            },
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-              toast.addEventListener('mouseenter', Swal.stopTimer)
-              toast.addEventListener('mouseleave', Swal.resumeTimer)
-            }
-          })
-  
-          Toast.fire({
-            icon: 'warning',
-            title: 'This email note registered',
-  
+          toast.error("This email doen't have an account !",{
+            duration: 4000,
+            position: 'top-center',
           })
         }else if(result.data.isPass==false){
-          const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            customClass: {
-              popup: 'colored-toast'
-            },
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-              toast.addEventListener('mouseenter', Swal.stopTimer)
-              toast.addEventListener('mouseleave', Swal.resumeTimer)
-            }
+          toast.error('Wrong password !',{
+            duration: 4000,
+            position: 'top-center',
           })
-  
-          Toast.fire({
-            icon: 'warning',
-            title: 'OOPS wrong password',
-  
-          })
+        }else if(result.data.blocked == true){
+            toast.error('Admin blocked you',{
+              duration: 4000,
+              position: 'top-center',
+            })
         }
 
       }
@@ -85,6 +61,7 @@ function LoginForm() {
 
   return (
     <div >
+      <Toaster/>
       <div className='img bg-darkGreen  mt-20'>
       <div className='flex justify-center'>
         <form action="" onSubmit={login} className=" mt-10"  >

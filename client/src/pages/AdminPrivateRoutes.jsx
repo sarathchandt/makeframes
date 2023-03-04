@@ -1,25 +1,24 @@
-import axios from 'axios';
 import React,{useState, useEffect} from 'react'
 import { Outlet } from "react-router-dom";
-import { UARL } from '../../API/apiCall';
-import Login from './AdminLogin'
-function AdminPrivateRoutes() {
+import { useDispatch,useSelector } from 'react-redux';
+import {checkTocken} from '../../slices/adminPrivateRouteCheck.mjs'
 
-    const [login, setLogin] = useState(false)
+import Login from './AdminLogin'
+
+function AdminPrivateRoutes() {
+    const token = useSelector(state=>state.token)
+    const dispatch = useDispatch()
 
     useEffect(()=>{
-        const token = localStorage.getItem('adminToken');
-        const headers = { Authorization: `admin ${token}` };
+      
+      dispatch(checkTocken())
+     
+          },[])
+          console.log(token,"looo");
 
-        axios.get(`${UARL}checkAdminToken`,{ headers }).then(res=>{
-                if(res.data.token){
-                    setLogin(true)
-                }
-        })
-    },[])
-
-  return (
-    login ? <Outlet/> : <Login/> 
+  return (<>
+    {token?.token?.data?.token ? <Outlet/> : <Login/> }
+    </>
   )
 }
 

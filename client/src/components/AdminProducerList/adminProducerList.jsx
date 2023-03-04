@@ -6,7 +6,6 @@ import {BsSearch} from '@react-icons/all-files/bs/BsSearch'
 function adminProducerList() {
 
     const [tableDetails, setTableDetails] = useState([])
-    const [selectedDetails, setSelectedDetails] = useState([])
     const [search, setSearch] = useState('')
 
 

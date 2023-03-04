@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { fetchOneProgram } from '../../../slices/fetchProgramForBook.mjs'
 import Map, { GeolocateControl, Marker } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
+import toast,{ Toaster } from 'react-hot-toast'
 
 import {bookedFunction} from '../../../slices/bookProgram.mjs'
 import {unBook} from '../../../slices/bookProgram.mjs'
@@ -27,7 +28,7 @@ function viewOneBook() {
     const [mark, setMark] = useState({})
     const [name, setName] = useState([])
     const [unequeCall, setUnequeCall] = useState(true)
-
+    const [minDate, setMinDate] = useState("");
     const [date, setDate] = useState('');
     const [time, setTime] = useState('');
     const [address, setAddress] = useState('');
@@ -106,109 +107,34 @@ function viewOneBook() {
 
     function bookProgram(){
         if(!date){
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                customClass: {
-                  popup: 'colored-toast'
-                },
-                showConfirmButton: false,
-                timer: 5000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                  toast.addEventListener('mouseenter', Swal.stopTimer)
-                  toast.addEventListener('mouseleave', Swal.resumeTimer)
-                }
-              })
-      
-              Toast.fire({
-                icon: 'warning',
-                title: 'Please select a date ',
-              })
+            toast.error('Please select a name',{
+                duration: 4000,
+                position: 'top-center'
+               })
         }else if(new Date(date) < new Date() ){
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                customClass: {
-                  popup: 'colored-toast'
-                },
-                showConfirmButton: false,
-                timer: 5000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                  toast.addEventListener('mouseenter', Swal.stopTimer)
-                  toast.addEventListener('mouseleave', Swal.resumeTimer)
-                }
-              })
-      
-              Toast.fire({
-                icon: 'warning',
-                title: "can't choose that date",
-              })
+            toast.error("Can't choose that date",{
+                duration: 4000,
+                position: 'top-center'
+               })
         }
         
         else if(!time){
             
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: 'top-end',
-                    customClass: {
-                      popup: 'colored-toast'
-                    },
-                    showConfirmButton: false,
-                    timer: 5000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                      toast.addEventListener('mouseenter', Swal.stopTimer)
-                      toast.addEventListener('mouseleave', Swal.resumeTimer)
-                    }
-                  })
-          
-                  Toast.fire({
-                    icon: 'warning',
-                    title: 'Please select a time ',
-                  })
+            toast.error('Please Provide a time',{
+                duration: 4000,
+                position: 'top-center'
+               })
         }else if(address.length < 20 ){
             
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: 'top-end',
-                    customClass: {
-                      popup: 'colored-toast'
-                    },
-                    showConfirmButton: false,
-                    timer: 5000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                      toast.addEventListener('mouseenter', Swal.stopTimer)
-                      toast.addEventListener('mouseleave', Swal.resumeTimer)
-                    }
-                  })
-          
-                  Toast.fire({
-                    icon: 'warning',
-                    title: 'Please provide full address',
-                  })
+            toast.error('Please Provide a valid address',{
+                duration: 4000,
+                position: 'top-center'
+               })
         }else if(10 !==  Number(Math.log(mob) * Math.LOG10E + 1 | 0)){
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                customClass: {
-                  popup: 'colored-toast'
-                },
-                showConfirmButton: false,
-                timer: 5000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                  toast.addEventListener('mouseenter', Swal.stopTimer)
-                  toast.addEventListener('mouseleave', Swal.resumeTimer)
-                }
-              })
-      
-              Toast.fire({
-                icon: 'warning',
-                title: 'Please provide 10 digit mobile number',
-              })
+           toast.error('Please Provide a valid number',{
+            duration: 4000,
+            position: 'top-center'
+           })
         }else{
             if(unequeCall){
                 setUnequeCall(false)
@@ -236,6 +162,9 @@ function viewOneBook() {
     
 
     useEffect(() => {
+
+        const today = new Date().toISOString().split('T')[0];
+        setMinDate(today);
         
         navigator.geolocation.getCurrentPosition((pos) => {
 
@@ -270,7 +199,7 @@ function viewOneBook() {
             fetchedPg.loading ? setEvent([]) : null;
         })
     }, [fetchedPg.loading])
-
+    console.log(fetchedPg,"pg");
     
     useEffect(() => {
         dispatch(fetchOneProgram(searchParams.get('id')))
@@ -281,6 +210,7 @@ function viewOneBook() {
     }, [])
     return (
         <div>
+            <Toaster/>
             {book.loading? <div>
                 <video src="../../../public/videos/loading-dot.mp4" />
             </div>: <>
@@ -310,11 +240,11 @@ function viewOneBook() {
                                                 <FaUserAlt className='mt-1 text-green' />
                                             </div>
                                             <div className="  col-5 " >
-                                                <p>{name?.data?.firstName} {name?.data?.lastName}</p>
+                                                <p>{fetchedPg?.program?.data?.user?.firstName} {fetchedPg?.program?.data?.user?.lastName}</p>
                                             </div>
                                             <div className='col-6 d-flex justify-content-end' >
-                                                <button className= 'd-md-block d-none btn bg-green text-white hover:bg-green'>Visit {name?.data?.firstName}'s profile</button>
-                                                <button className='d-md-none d-block btn bg-green text-white hover:bg-green text-xs'>Visit {name?.data?.firstName}'s profile</button>
+                                                <button className= 'd-md-block d-none btn bg-green text-white hover:bg-green'>Visit {fetchedPg?.program?.data?.user?.firstName}'s profile</button>
+                                                <button className='d-md-none d-block btn bg-green text-white hover:bg-green text-xs'>Visit {fetchedPg?.program?.data?.user?.firstName}'s profile</button>
 
                                             </div>
                                             <div className="col-1 d-flex justify-content-end">
@@ -362,7 +292,7 @@ function viewOneBook() {
                                         <label htmlFor="date">Select Date</label>
                                     </div>
                                     <div className='d-flex justify-content-center'>
-                                        <input type="date" className='ms-3 me-3 mb-3 email w-fill text-black  border-4 rounded-lg bg-lightGreen ' value={date} onChange={(e)=>{setDate(e.target.value);checkValid(date)}} />
+                                        <input type="date" min={minDate} className='ms-3 me-3 mb-3 email w-fill text-black  border-4 rounded-lg bg-lightGreen ' value={date} onChange={(e)=>{setDate(e.target.value);checkValid(date)}} />
                                     </div>
                                     <div className='d-flex justify-content-center '>
                                         <label htmlFor="date">Select Time</label>

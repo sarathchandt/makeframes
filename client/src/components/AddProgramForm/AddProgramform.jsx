@@ -7,7 +7,9 @@ import 'react-calendar/dist/Calendar.css';
 import { IoIosRemoveCircle } from "@react-icons/all-files/io/IoIosRemoveCircle.esm"
 import { UURL } from '../../../API/apiCall';
 import Swal from 'sweetalert2'
+import toast,{Toaster} from 'react-hot-toast'
 
+import {AiFillInfoCircle} from '@react-icons/all-files/ai/AiFillInfoCircle'
 
 
 
@@ -31,101 +33,37 @@ function  AddProgramform() {
     const [selectedDaates, setSelectedDates] = useState([])
     const [videoUrl, setVideoUrl] = useState('')
     const [throttleClick, setThrottleClick] = useState(false);
-
+    const [loading, setLoding]=useState(false)
+    const [ rules, setRules]= useState([])
 
     const navigate = useNavigate();
 
+    useEffect(()=>{
+        axios.get(`${UURL}takeDescription`,{withCredentials:true}).then(res=>{
+            console.log(res);
+            setRules(res.data[0])
+        })
+    },[])
 
 const uploadForm = async () => {
+    setLoding(true)
     if(!throttleClick){
-
-
-  
-
         if(name.length==0){
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                customClass: {
-                  popup: 'colored-toast'
-                },
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                  toast.addEventListener('mouseenter', Swal.stopTimer)
-                  toast.addEventListener('mouseleave', Swal.resumeTimer)
-                }
-              })
-      
-              Toast.fire({
-                icon: 'warning',
-                title: "Please add a Name",
-      
-              })
+            setLoding(false)
+            toast.custom(<div className='bg-red p-2 rounded flex'> <AiFillInfoCircle className='mt-1 mr-1'/>Please add a name</div>,{icon:<AiFillInfoCircle/>,style: {}, duration: 2000,
+            position: 'top-right', })
         }else if(category.length==0){
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                customClass: {
-                  popup: 'colored-toast'
-                },
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                  toast.addEventListener('mouseenter', Swal.stopTimer)
-                  toast.addEventListener('mouseleave', Swal.resumeTimer)
-                }
-              })
-      
-              Toast.fire({
-                icon: 'warning',
-                title: "Please add category",
-      
-              })  
+            setLoding(false)
+            toast.custom(<div className='bg-red p-2 rounded flex'> <AiFillInfoCircle className='mt-1 mr-1'/>Please add a category</div>,{icon:<AiFillInfoCircle/>,style: {}, duration: 2000,
+            position: 'top-right', }) 
         }else if(amount==null){
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                customClass: {
-                  popup: 'colored-toast'
-                },
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                  toast.addEventListener('mouseenter', Swal.stopTimer)
-                  toast.addEventListener('mouseleave', Swal.resumeTimer)
-                }
-              })
-      
-              Toast.fire({
-                icon: 'warning',
-                title: "Please add amount",
-      
-              })  
+            setLoding(false)
+            toast.custom(<div className='bg-red p-2 rounded flex'> <AiFillInfoCircle className='mt-1 mr-1'/>Please add a amount</div>,{icon:<AiFillInfoCircle/>,style: {}, duration: 2000,
+            position: 'top-right', })
         }else if(image.length==0){
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                customClass: {
-                  popup: 'colored-toast'
-                },
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                  toast.addEventListener('mouseenter', Swal.stopTimer)
-                  toast.addEventListener('mouseleave', Swal.resumeTimer)
-                }
-              })
-      
-              Toast.fire({
-                icon: 'warning',
-                title: "Please add amount",
-      
-              })  
+            setLoding(false)
+            toast.custom(<div className='bg-red p-2 rounded flex'> <AiFillInfoCircle className='mt-1 mr-1'/>Please add images</div>,{icon:<AiFillInfoCircle/>,style: {}, duration: 2000,
+            position: 'top-right', })
         }
 
         const data = new FormData()
@@ -152,15 +90,15 @@ const uploadForm = async () => {
                         videoUrl: videoUrl
                     }
                         
-                  setTimeout(()=>{
                     axios.post(`${UURL}submitProgram`, details).then(result => {
                         if(result.data.Program){
+                                setLoding(false)
                             navigate('/viewPrograms')
                         }else{
                             navigate('/addPrograms')
                         }
                     })
-                },1000)
+                
                 })
             })             
           
@@ -187,35 +125,19 @@ const uploadForm = async () => {
 
     }
     
-
+    useEffect(()=>{
+        loading ? toast.loading('Uploading program...'): null 
+    },[loading])
 
     useEffect(() => {
-        if(new Date(date) < new Date()){
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'top-end',
-                customClass: {
-                  popup: 'colored-toast'
-                },
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                  toast.addEventListener('mouseenter', Swal.stopTimer)
-                  toast.addEventListener('mouseleave', Swal.resumeTimer)
-                }
-              })
-      
-              Toast.fire({
-                icon: 'warning',
-                title: "Can't choose this date",
-      
-              })
+        if(new Date(date) < new Date() && selectedDaates.length > 0){
+           toast.custom(<div className='bg-red p-2 rounded flex'> <AiFillInfoCircle className='mt-1 mr-1'/>Can't take that date</div>,{icon:<AiFillInfoCircle/>,style: {}, duration: 2000,
+           position: 'top-right', })
         }else{
 
             
             if (selectedDaates.length == 0) {
-                setSelectedDates([...selectedDaates, date])
+                setSelectedDates([...selectedDaates,  date])
                 setMapDates([...mapDates, { date: date.toString().split(' '), key: Date.now() }])
             } else {
                 new Promise((resolve, reject) => {
@@ -263,14 +185,14 @@ const uploadForm = async () => {
     return (
         <>
             <div className='container-fluid' >
+                <Toaster/>
                 <div className="row bg-lightGreen p-4 text-black mb-4 mt-5">
                     <div className="col-md-3 d-flex justify-content-center mb-4  ">
                         <h6 style={{ fontSize: '20px' }} className='text-uppercase' >  Terms & Conditions</h6>
                     </div>
                     <div className="col-md-9  scroll-object ">
-                        <p>Lorem ipsum dolo Lorem ipsumuseEffect
-                            dolor sit, amet consectetur adipisicing elit. Corporis, dolorum fugit non eius possimus odit veniam eveniet esse autem quibusdam optio odio temporibus exercitationem quas a accusantium, ratione necessitatibus tempora. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Maxime culpa placeat consequuntur deserunt inventore sequi facilis, consectetur, molestiae at ullam adipisci voluptatum quod tempore rem soluta deleniti numquam id necessitatibus. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque minima praesentium cum, consequuntur earum doloremque dolor alias eius laudantium porro repudiandae, unde dolorem illo non sint voluptatibus aspernatur maxime necessitatibus? Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem, molestiae assumenda. Voluptatum velit excepturi tempore, iusto unde doloribus placeat iste, nulla harum consectetur sit asperiores debitis molestias, quisquam officiis error? Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur aperiam iusto ad sint quasi quae dolore totam tenetur fugit perferendis iste animi, reiciendis officia blanditiis quaerat rem! Expedita, obcaecati harum. Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere eum nihil necessitatibus provident dolorum excepturi perferendis, architecto nesciunt quia ipsum iusto quasi corrupti accusantium laborum eveniet aliquam non eos saepe? Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos consequuntur mollitia molestiae provident quod dolorem voluptate laborum? Accusantium aliquam libero saepe odit officia labore. Temporibus debitis maiores beatae vitae molestias. Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur saepe minima id, similique omnis earum placeat iste dolor! Repellendus eius amet ea quidem tempora perspiciatis, deleniti cupiditate soluta blanditiis excepturi? r sit amet consectetur adipisicing elit. Totam quos rerum tempore aut molestiae sint reprehenderit eius possimus, natus cumque eos nulla asperiores ad laudantium molestias aliquid sequi optio illo!loglor Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsa optio aperiam laudantium obcaecati quasi dolores et nam sed, expedita voluptates at sint exercitationem impedit quidem cum natus quisquam quaerat modi. Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero facilis natus autem omnis cum nam expedita eius quis, maiores quae praesentium corrupti sed rem dicta quod laudantium nesciunt ipsam eligendi.</p>
-                    </div>
+                        <p>{rules?.desc}</p>
+             </div>
                 </div>
             </div>
 
@@ -349,7 +271,7 @@ const uploadForm = async () => {
                     )
                 }
                 <div className='d-flex justify-content-center mt-5 mb-3'>
-                    <button className='btn bg-darkGreen text-white hover:bg-red' onClick={uploadForm}>Upload Program</button>
+                    <button className='btn bg-darkGreen text-white hover:bg-red' onClick={loading ? null : uploadForm}>Upload Program</button>
                 </div>
 
             </div>

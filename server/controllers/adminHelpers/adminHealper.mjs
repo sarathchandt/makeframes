@@ -1,8 +1,10 @@
 import User from '../../model/signupModel.mjs'
 import Programs from '../../model/programModel.mjs'
 import Posts from '../../model/postModel.mjs'
+import Description from '../../model/descriptionModel.mjs'
 import Booking from '../../model/bookingModel.mjs'
 import Chat from '../../model/chatSchema.mjs'
+import Categories from '../../model/categoryModel.mjs'
 import { createJwt } from '../../middleware/jwtAuth.mjs'
 
 
@@ -209,3 +211,130 @@ export function takeProducerAdmin(){
         })
     })
 } 
+
+export function takeProgramsForAdmin(){
+    return new Promise((resolve, reject)=>{
+        Programs.find().sort({bookingCount:-1}).populate('user').then(res=>{
+            resolve(res);
+        })
+    })
+}
+
+export function programByRegex(body){
+    return new Promise((resolve, reject)=>{
+        try{
+            const regex = new RegExp(body.name, 'i');
+                Programs.find({ name: regex }).sort({name:1}).then(res=>{ 
+                    resolve(res)
+                })
+        }catch(err){
+            Programs.find().sort({bookingCount:-1}).populate('user').then(res=>{
+                resolve(res);
+            })
+        }
+    })
+}
+
+export function unBlockItNow(body){
+    return new Promise((resolve, reject)=>{
+        Programs.updateOne({_id:body.userId},{$set:{isBlocked:false}}).then(res=>{
+            resolve({unBlocked:true})
+        })
+    })
+}
+export function blockItNow(body){
+    return new Promise ((resolve, reject)=>{
+        Programs.updateOne({_id:body.userId},{$set:{isBlocked:true}}).then(res=>{
+            resolve({blocked:true})
+        })
+    })
+}
+
+export function takeCategories(){
+        return new Promise ((resolve, reject)=>{
+            Categories.find().then(res=>{
+
+                resolve(res)
+            })
+        })
+}
+export function categoryAdd({cate,user}){
+    
+    return new Promise((resolve, reject)=>{
+        if(user==true){
+
+            cate.length==0 ? resolve({length:false}):
+            
+            Categories.findOne({name:cate.toUpperCase(),user:true}).then(res=>{
+                if(!res){
+                    new Categories({name:cate.toUpperCase(),user:user}).save().then(()=>{
+                        resolve({cate:true})
+                    })
+                }else{
+                    resolve({cate:false})
+                }
+            })
+        }else{
+            
+            cate.length==0 ? resolve({length:false}):
+            
+            Categories.findOne({name:cate.toUpperCase(),user:false}).then(res=>{
+                if(!res){
+                    new Categories({name:cate.toUpperCase(),user:user}).save().then(()=>{
+                        resolve({cate:true})
+                    })
+                }else{
+                    resolve({cate:false})
+                }
+            })
+        }
+      
+        
+    })
+}
+
+export function cateRemove({id,indecator}){
+    return new Promise((resolve,reject)=>{
+        if(indecator==true){
+            Categories.findOneAndRemove({_id:id,user:true}).then(()=>{
+                resolve()
+            })
+        }else{
+            Categories.findOneAndRemove({_id:id,user:false}).then(()=>{
+                resolve()
+            })
+        }
+           
+    })
+}
+
+export function AdminDescription({desc}){
+    return new Promise((resolve, reject)=>{
+        Description.deleteMany().then(()=>{
+
+            Description({
+                desc:desc
+            }).save().then(()=>{
+                resolve()
+            })
+        })
+    })
+}
+
+export function DescTake(){
+    return new Promise((resolve,reject)=>{
+        Description.find().sort({createdAt:-1}).then(res=>{
+            resolve(res)
+        })
+    })
+}
+
+export function changeState({id}){
+    return new Promise((resolve, reject)=>{
+        Description.deleteMany().then(()=>{
+            Description.findOneAndUpdate({_id:id},{$set:{current:true}}).then(res=>{
+                resolve()
+            })
+        })
+    })
+}
